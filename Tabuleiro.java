@@ -1,51 +1,137 @@
+import java.util.Random;
+
+// TODO: Definir as portas abertas
+
 public class Tabuleiro {
-    /*
-    int tipoSetor(0 = normal, 1 = oculto, 2 = privado);
-    int qntdPortas; problema: como colocar uma porta pra cima? talvez com variaveis tipo cima = 0, esq = 1, dir = 2, baixo = 3?
-    int qntdInimigos; ajudaria a saber se tds os inimigos estao mortos sem precisar percorrer tds os inimigos(provavelmente sera uma lista de inimigos)
-    lista de inimigos? como inicializaria eles aq se inimigo eh uma classe q nn ta aq? eu ax q da pra fazer isso aq se importar a classe se nn me engano
+    public Setor[][] setores;
+    
+    public Tabuleiro() {
+        Random aleat = new Random();
 
+        this.setores = new Setor[5][5];
+        // Inicializa setor por setor;
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                this.setores[x][y] = new Setor(x, y);
+            }
+        }
 
-    //metodos get e set
-    //metodo de imprimir(oq eu tbm nn sei como fazer certinho, tipo, pra ficar daquele jeito bunitinho)
-    */
-    public static final int NORMAL = 1, OCULTO = 2, PRIVADO = 3;
-    public static final int NORTE = 1, LESTE = 2, OESTE = 4, SUL = 8; //bitmask, pesquisei como fazer isso pq da outra forma ia ser mt mais trabalho
-    //e feio
+        // Escolhe um setor final aleatóriamente
+        this.setores[aleat.nextInt(5)][aleat.nextInt(5)].setFinal();
+    }
 
-    private final int[][] tipoSetor;
-    private final int[][] portas;
+    private void imprimeTitulo() {
+        System.out.println("-".repeat(30));
+        System.out.println();
+        System.out.println("|" + " ".repeat(4) + "Antivírus por um dia" + " ".repeat(4) + "|");
+        System.out.println();
+        System.out.println("-".repeat(30));
+    }
 
-    //public final int qntdInimigos; isso depende de como a gente vai implementar os inimigos
+    private void imprimeSetores() {
+        System.out.print(" ".repeat(5));
+        for(int i = 1; i < 6; i++) {
+            System.out.print(i + "   ");
+        }
+        System.out.println();
 
-    public Tabuleiro(){
-        tipoSetor = new int[][]{
-            {OCULTO, PRIVADO, OCULTO, NORMAL, PRIVADO},
-            {NORMAL, NORMAL, PRIVADO, OCULTO, NORMAL},
-            {PRIVADO, OCULTO, NORMAL, NORMAL, OCULTO},
-            {NORMAL, PRIVADO, NORMAL, OCULTO, PRIVADO},
-            {OCULTO, OCULTO, NORMAL, PRIVADO, NORMAL},
-        };//o objetivo final esta no canto inferior direito, o [4][4]
+        for(int i = 0; i < 5; i++) {
+            System.out.print("   ");
+            for(int j = 0; j < 5; j++) {
+                // UP
+                if(i == 0) {
+                    if(j < 4) {
+                        System.out.print("|---");
+                    }
+                    else {
+                        System.out.print("|---|");
+                    }
+                }
+                else if(i <= 4) {
+                    if(j < 4) {
+                        if(this.setores[i][j].UP) {
+                            System.out.print("|-*-");
+                        }
+                        else {
+                            System.out.print("|---");
+                        }
+                    }
+                    else {
+                        if(this.setores[i][j].UP) {
+                            System.out.print("|-*-|");
+                        }
+                        else {
+                            System.out.print("|---|");
+                        }
+                    }
+                }
+            }
+                // MID
+            System.out.println("");
+            System.out.print((i+1) + "  ");
 
-        portas = new int[][]{
-            {SUL|LESTE, OESTE|LESTE, OESTE|SUL|LESTE, OESTE, SUL},
-            {NORTE|LESTE, OESTE|SUL, NORTE|SUL, SUL|LESTE, OESTE|NORTE},
-            {LESTE, OESTE|NORTE|LESTE, OESTE|NORTE|LESTE|SUL, OESTE|NORTE|LESTE, OESTE|SUL},
-            {NORTE|LESTE|SUL, OESTE|LESTE, OESTE|NORTE|LESTE|SUL, OESTE|SUL, NORTE|SUL},
-            {NORTE|LESTE, OESTE, NORTE|LESTE, OESTE|NORTE, NORTE},
-        };
+            for(int j = 0; j < 5; j++) {
+                String symbol;
+                    if(this.setores[i][j].ehFinal) {
+                        symbol = " X ";
+                    }
+                    else if(this.setores[i][j].p1Esta && this.setores[i][j].p2Esta) {
+                        symbol = " P ";
+                    }
+                    else if(this.setores[i][j].p1Esta) {
+                        symbol = "P1 ";
+                    }
+                    else if(this.setores[i][j].p2Esta) {
+                        symbol = "P2 ";
+                    }
+                    else {
+                        symbol = "   ";
+                    }
+                if(j == 0) {
+                    System.out.print("|");
+                    System.out.print(symbol);
+                }
+                else if(j < 4) {
+                    if(this.setores[i][j].LEFT) {
+                        System.out.print("*");
+                    }
+                    else {
+                        System.out.print("|");
+                    }
+                    System.out.print(symbol);
+                }
+                else {
+                    if(this.setores[i][j].LEFT) {
+                        System.out.print("*");
+                    }
+                    else {
+                        System.out.print("|");
+                    }
+                    System.out.print(symbol);
+                    System.out.print("|");
+                }
+            }
+            System.out.println("");
+        }
+        System.out.print("   ");
+        for(int j = 0; j < 5; j++) {
+            if(j < 4) {
+                System.out.print("|---");
+            }
+                else {
+                    System.out.print("|---|");
+                }
+        }
+        System.out.println("");
+    }
 
-        //nn sei como imprimir do jeito q ta la no exemplo, q eh imprimindo as bordas da matriz
+    private void imprimeSetorJogadores() {
 
     }
 
-    public int getTipo(int linha, int coluna){
-            return tipoSetor[linha][coluna];
+    public void imprimeTabuleiro() {
+        imprimeTitulo();
+        imprimeSetores();
+        imprimeSetorJogadores();
     }
-
-    public boolean temPorta(int linha, int coluna, int direcao){
-        return (portas[linha][coluna] & direcao) != 0; //SUL|NORTE & LESTE == 0, ENT NN TEM PORTA, MAS & SUL == 1, ENT TEM PORTA PARA SUL
-    }
-
-
 }
