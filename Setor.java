@@ -3,7 +3,7 @@ import java.util.Random;
 public class Setor {
     public int x, y;
     public Inimigo[] inimigos;
-    public Boolean ehFinal, p1Esta, p2Esta;
+    public Boolean ehFinal, ehIncial, p1Esta, p2Esta;
     public Boolean UP, DOWN, LEFT, RIGHT; //Portas == True; False == 0
     public int tipo; // 1 -> Normal; 2 -> Oculto; 3 -> Privado
 
@@ -19,6 +19,7 @@ public class Setor {
         }
 
         // Tudo inicia falso
+        this.ehIncial = false;
         this.ehFinal = false;
         this.p1Esta = false;
         this.p2Esta = false;
@@ -32,23 +33,24 @@ public class Setor {
         this.tipo = aleat.nextInt(3) + 1;
     }
 
-    public void setPorta(String direcao, boolean aberta) {
-        switch (direcao) {
-            case "UP":
-                this.UP = aberta;
-                break;
-            case "DOWN":
-                this.DOWN = aberta;
-                break;
-            case "LEFT":
-                this.LEFT = aberta;
-                break;
-            case "RIGHT":
-                this.RIGHT = aberta;
-                break;
-            default:
-                throw new AssertionError();
-        }
+    public void setJogadorP1() {
+        this.p1Esta = true;
+    }
+
+    public void setJogadorP2() {
+        this.p2Esta = false;
+    }
+
+    public void unsetJogadorP1() {
+        this.p1Esta = false;
+    }
+
+    public void unsetJogadorP2() {
+        this.p2Esta = false;
+    }
+
+    public void setInicio() {
+        this.ehIncial = true;
     }
 
     public void setFinal(){
