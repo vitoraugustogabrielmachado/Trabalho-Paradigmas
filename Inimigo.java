@@ -1,53 +1,64 @@
+import java.util.Random;
+
 public class Inimigo implements Entidade{
-    public int atk, def, linha, coluna;
-    public boolean vivo;
 
+    // Atributos
+    private int atk, def;
+    private boolean vivo;
 
-    public Inimigo(){};
-    public Inimigo(int atk, int def, boolean vivo, int linha, int coluna){
+    // Construtores
+    public Inimigo(){
+        // cria o inimigo aleatoriamente
+        Random random = new Random();
+        int num = random.nextInt(3)+1;
+        this.atk = num;
+        this.def = num;
+        this.vivo = True;
+    };
+
+    public Inimigo(int atk, int def, boolean vivo){
         this.setAtk(atk);
         this.setDef(def);
         this.setVivo(vivo);
     }
 
+    // Metodos
     public void setAtk(int atk){
-        if(atk > 0) 
+        if(atk > 0 && atk < 4)
             this.atk = atk;
     }
 
     public int getAtk() {
-        return atk;
+        return this.atk;
     }
 
     public void setDef(int def) {
-        if(def > 0)
+        if(def > 0 && def < 4)
             this.def = def;
     }
 
     public int getDef() {
-        return def;
+        return this.def;
     }
 
-    public void setVivo(boolean vivo) {
-        this.vivo = vivo;
+    public void isVivo(boolean vivo) {
+        return this.vivo;
     }
 
-    public boolean getVivo() {
-        return vivo;
+    public boolean setVivo() {
+        this.vivo = vivo
     }
 
     public void atacar(Inimigo oponente){};
-    public void atacar(JogadorSimples p1){
-        p1.recebeuDano(atk);
-    }
 
-    public void atacar(JogadorSuporte p2){
-        p2.recebeuDano(atk);
-    }
-
-    public void recebeuDano(int dano){
-        this.def -= dano;
-        if(this.def <= 0)
-            this.vivo = false;
+    // Ataca o jogador p caso num seja par
+    public void atacar(Jogador p){
+        Random random = new Random();
+        int num = random.nextInt(6)+1;
+        if (num % 2 == 0) {
+            p.setDef(p.getDef()-this.atk);
+            if (p.getDef() <= 0)
+                    p.setVivo(false);
+        }
     }
 }
