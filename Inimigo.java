@@ -51,25 +51,14 @@ public class Inimigo implements Entidade{
 
     public void atacar(Inimigo oponente){};
 
-    // Ataca o jogador p1 caso num seja par
-    public void atacar(JogadorSimples p1){
+    // Ataca o jogador p caso num seja par
+    public void atacar(Jogador p){
         Random random = new Random();
         int num = random.nextInt(6)+1;
         if (num % 2 == 0) {
-            p1.setDef(p1.getDef()-this.atk);
-            if (p2.getDef() <= 0)
-                    p2.setVivo(false);
-        }
-    }
-
-    // Ataca o jogador p2 caso num seja par
-    public void atacar(JogadorSuporte p2){
-        Random random = new Random();
-        int num = random.nextInt(6)+1;
-        if (num % 2 == 0) {
-            p2.setDef(p2.getDef()-this.atk);
-            if (p2.getDef() <= 0)
-                    p2.setVivo(false);
+            p.setDef(p.getDef()-this.atk);
+            if (p.getDef() <= 0)
+                    p.setVivo(false);
         }
     }
 }
