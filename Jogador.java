@@ -2,11 +2,17 @@ import java.util.Random;
 
 public abstract class Jogador implements Entidade {
     // Atributos
-    protected int atk, def;
+    protected int atk, def, X, Y;
     protected boolean vivo;
 
     // Construtores
     public Jogador(){};
+
+    public Jogador(int X, int Y){
+            this.X = X;
+            this.Y = Y
+    }
+
     public Jogador(int atk, int def, boolean vivo){
         this.setAtk(atk);
         this.setDef(def);
@@ -38,6 +44,22 @@ public abstract class Jogador implements Entidade {
 
     public boolean isVivo() {
         return vivo;
+    }
+
+    public int getX() {
+            return this.X;
+    }
+
+    public void setX(int X) {
+            this.X = X;
+    }
+
+    public int Y getY() {
+            return this.Y;
+    }
+
+    public void setY(int Y) {
+            this.Y = Y;
     }
 
     public void atacar(Inimigo op){
