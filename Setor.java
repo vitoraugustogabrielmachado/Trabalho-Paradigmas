@@ -15,7 +15,7 @@ public class Setor {
         inimigos = new Inimigo[aleat.nextInt(3) + 1];
         // Inicializa todos os inimigos do setor
         for(int i = 0; i < inimigos.length; i++) {
-            inimigos[i] = new Inimigo(aleat.nextInt(1, 7), aleat.nextInt(1, 7), true, x, y);
+            inimigos[i] = new Inimigo(aleat.nextInt(1, 7), aleat.nextInt(1, 7), true);
         }
 
         // Tudo inicia falso
@@ -34,6 +34,16 @@ public class Setor {
     }
     public Inimigo[] getInimigos() {
         return inimigos;
+    }
+    public boolean ehPorta(String direcao){
+        switch (direcao) {
+            case "UP": return this.UP;
+            case "DOWN": return this.DOWN;
+            case "LEFT": return this.LEFT;
+            case "RIGHT": return this.RIGHT;
+            default:
+                return false;
+        }
     }
     public void setInimigos(Inimigo[] inimigos) {
         this.inimigos = inimigos;

@@ -3,7 +3,7 @@
 ## Tabuleiro
 
 ### Atributos
-
+- `String titulo` -> O titulo do tabuleiro 
 - `Setor setores[][]` → Uma matriz de setores
 
 ### Métodos
@@ -15,6 +15,8 @@
 - `p2Entrou(int x, int y);` → Define que p2 entrou no setor (x, y)
 - `p1Saiu(int x, int y);` → Define que p1 saiu do setor (x, y)
 - `p2Saiu(int x, int y);` → Define que p2 saiu do setor (x, y)
+- `movimentoLiberado(int x, int y, String porta);` -> retorna "true" caso a porta "porta" do setor (x, y) estiver aberta e false CC.
+    OBS: porta = "UP"|"DOWN"|"LEFT"|"RIGHT".
 - `imprimeTabuleiro();` → Imprime o tabuleiro
 
 ### Construtor
