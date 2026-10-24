@@ -1,4 +1,4 @@
-import java.util.Random;
+import java.util.Random; 
 
 public class Inimigo implements Entidade{
 
@@ -13,7 +13,7 @@ public class Inimigo implements Entidade{
         int num = random.nextInt(3)+1;
         this.atk = num;
         this.def = num;
-        this.vivo = True;
+        this.vivo = true;
     };
 
     public Inimigo(int atk, int def, boolean vivo){
@@ -41,12 +41,12 @@ public class Inimigo implements Entidade{
         return this.def;
     }
 
-    public void isVivo(boolean vivo) {
+    public boolean isVivo() {
         return this.vivo;
     }
 
-    public boolean setVivo() {
-        this.vivo = vivo
+    public void setVivo(boolean vivo) {
+        this.vivo = vivo;
     }
 
     public void atacar(Inimigo oponente){};

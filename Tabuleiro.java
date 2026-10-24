@@ -226,7 +226,7 @@ public class Tabuleiro {
 
         for(int i = 0; i < inimigos.length; i++) {
             System.out.print(" ");
-            System.out.print(inimigos[i].atk + "/" + inimigos[i].def);
+            System.out.print(inimigos[i].getAtk() + "/" + inimigos[i].getAtk());
         }
         System.out.print(" ".repeat(13 - 4 * inimigos.length) + "|");
         
@@ -238,7 +238,7 @@ public class Tabuleiro {
 
             for(int i = 0; i < inimigos.length; i++) {
                 System.out.print(" ");
-                System.out.print(inimigos[i].atk + "/" + inimigos[i].def);
+                System.out.print(inimigos[i].getAtk() + "/" + inimigos[i].getDef());
             }
             System.out.print(" ".repeat(13 - 4 * inimigos.length) + "|");
         }

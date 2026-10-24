@@ -15,7 +15,7 @@ public class Setor {
         inimigos = new Inimigo[aleat.nextInt(3) + 1];
         // Inicializa todos os inimigos do setor
         for(int i = 0; i < inimigos.length; i++) {
-            inimigos[i] = new Inimigo(aleat.nextInt(1, 7), aleat.nextInt(1, 7), true, x, y);
+            inimigos[i] = new Inimigo(aleat.nextInt(1, 7), aleat.nextInt(1, 7), true);
         }
 
         // Tudo inicia falso
