@@ -1,17 +1,27 @@
+import java.util.Random;
+
 public abstract class Jogador implements Entidade {
-    protected int atk, def, linha, coluna;
+    // Atributos
+    protected int atk, def, X, Y;
     protected boolean vivo;
 
+    // Construtores
     public Jogador(){};
-    public Jogador(int atk, int def, boolean vivo, int linha, int coluna){
+
+    public Jogador(int X, int Y){
+            this.X = X;
+            this.Y = Y
+    }
+
+    public Jogador(int atk, int def, boolean vivo){
         this.setAtk(atk);
         this.setDef(def);
         this.setVivo(vivo);
-        this.setLinha(linha);
-        this.setColuna(coluna);
     }
+
+    // Metodos
     public void setAtk(int atk){
-        if(atk > 0) //talvez precise ter um limitante superior, mas ax q quando a funcao random funciona, ela ja ta limitada superiormente
+        if(atk > 0 && atk < 4)
             this.atk = atk;
     }
 
@@ -32,31 +42,30 @@ public abstract class Jogador implements Entidade {
         this.vivo = vivo;
     }
 
-    public boolean getVivo() {
+    public boolean isVivo() {
         return vivo;
     }
 
-    public int getColuna() {
-        return coluna;
+    public int getX() {
+            return this.X;
     }
 
-    public int getLinha() {
-        return linha;
+    public void setX(int X) {
+            this.X = X;
     }
 
-    public void setColuna(int coluna) {
-        if(coluna >= 0 & coluna <= 4) //tecnicamente, isso eh inutil, ja q ele vai spawnar em 2x2
-            this.coluna = coluna;
-    }
-    
-    public void setLinha(int linha) {
-        if(linha >= 0 & linha <= 4)
-            this.linha = linha;
+    public int Y getY() {
+            return this.Y;
     }
 
-    public void atacar(Inimigo oponente){ //isso depende de como a gente vai implementar, talvez tenha q passar uma lista, depende
-        oponente.recebeuDano(atk);
-        //talvez aq tenha q tirar ele da lista, dnv, depende de como vai implementar
+    public void setY(int Y) {
+            this.Y = Y;
+    }
+
+    public void atacar(Inimigo op){
+        op.setDef(op.getDef() - this.atk);
+        if (op.getDef() <= 0)
+                op.setVivo(false);
     }
 
 
@@ -66,7 +75,7 @@ public abstract class Jogador implements Entidade {
                 case Tabuleiro.NORTE:
                     linha--;
                     break;
-                
+
                 case Tabuleiro.SUL:
                     linha++;
                     break;
@@ -82,10 +91,12 @@ public abstract class Jogador implements Entidade {
         }
     }
 
-    public void atacar(JogadorSimples p1){};
-    public void atacar(JogadorSuporte p2){};
+    public void atacar(Jogador p){};
 
-    public void procurar(int chance){
+    // Recebe o setor atual do jogador
+    public void procurar(Setor setor){
+        Random random = new Random();
+        int num = random.nextInt(6)+1;
         switch (chance) {
             case 4:
                 this.def++;
@@ -93,18 +104,14 @@ public abstract class Jogador implements Entidade {
             case 5:
                 this.def += 2;
                 break;
-            case 6: // aq dnv depende de como implementar os inimigos para poder tirar um de def de tds os do setor
+            case 6:
+                for (int i = 0; i < 3; i++)
+                        if (setor.inimigos[i].isVivo() == true)
+                                setor.inimigos[i].setDef(setor.inimigos[i].getDef() - 1);
                 break;
             default:
-                //talvez imprimir no topo da tela "Nada encontrado"
+                System.out.println("Nada encontrado");
                 break;
         }
     }
-
-    public void recebeuDano(int dano){
-        this.def -= dano;
-        if(this.def <= 0)
-            this.vivo = false;
-    }
-
 }
