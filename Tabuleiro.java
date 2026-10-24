@@ -1,6 +1,9 @@
 import java.util.Random;
 
-// TODO: Definir as portas abertas; melhorar código de impressão;
+/* TODO: Definir as portas abertas; melhorar, comentar e otimizar código de impressão;
+//  TALVEZ SEJA MELHOR COLOCAR O MÉTODO imprimeSetorJogadores(); em uma classe que contenha ambos atributos
+//  Adaptar imprimeSetorJogadores(); com o restante do código;
+*/
 
 public class Tabuleiro {
     public Setor[][] setores;
@@ -35,6 +38,12 @@ public class Tabuleiro {
     // Retorna tipo do setor (x, y)
     public int getTipo(int x, int y) {
         return this.setores[x][y].tipo;
+    }
+    public Inimigo[] getInimigos(int x, int y) {
+        return this.setores[x][y].getInimigos();
+    }
+    public void setInimigos(int x, int y, Inimigo[] inimigos) {
+        this.setores[x][y].setInimigos(inimigos);
     }
     public void p1Entrou(int x, int y) {
         this.setores[x][y].setJogadorP1();
@@ -100,7 +109,7 @@ public class Tabuleiro {
                     }
                 }
             }
-                // MID
+            // MID
             System.out.println("");
             System.out.print((i+1) + "  ");
 
@@ -163,8 +172,150 @@ public class Tabuleiro {
         }
         System.out.println("");
     }
-
+    
     private void imprimeSetorJogadores() {
+        int xP1 = 2, yP1 = 2, xP2 = 2, yP2 = 2;
 
+        for (int i = 0; i < 5; i++) {
+            for(int j = 0; j < 5; j++) {
+                if(this.setores[i][j].p1Esta) {
+                    xP1 = i;
+                    yP1 = j;            
+                }
+                else if(this.setores[i][j].p2Esta) {
+                    xP2 = i;
+                    yP2 = j;
+                }
+            }
+        }
+        boolean diferente = false;
+
+        if (xP1 != xP2 || yP1 != yP2) {
+            diferente = true;
+        }
+        System.out.println();
+        System.out.print("  " + "Setor [" + xP1 + "," + yP1 + "]" + "     ");
+
+        if(diferente) {
+            System.out.print("  " + "Setor [" + xP2 + "," + yP2 + "]");
+        }
+
+        System.out.println();
+        
+        if(this.setores[xP1][yP1].UP) {
+            System.out.print("|------*------|");
+        }
+        else {
+            System.out.print("|-------------|");
+        }
+
+        if(diferente) {
+            System.out.print("    ");
+            if(this.setores[xP2][yP2].UP) {
+                System.out.print("|------*------|");
+            }
+            else {
+                System.out.print("|-------------|");
+            }
+        }
+
+        System.out.println();
+        Inimigo[] inimigos = this.setores[xP1][yP1].getInimigos();
+
+        System.out.print("|");
+
+        for(int i = 0; i < inimigos.length; i++) {
+            System.out.print(" ");
+            System.out.print(inimigos[i].atk + "/" + inimigos[i].def);
+        }
+        System.out.print(" ".repeat(13 - 4 * inimigos.length) + "|");
+        
+        if(diferente) {
+            System.out.print("    ");
+            inimigos = this.setores[xP2][yP2].getInimigos();
+
+            System.out.print("|");
+
+            for(int i = 0; i < inimigos.length; i++) {
+                System.out.print(" ");
+                System.out.print(inimigos[i].atk + "/" + inimigos[i].def);
+            }
+            System.out.print(" ".repeat(13 - 4 * inimigos.length) + "|");
+        }
+        
+        System.out.println();
+
+        System.out.print("|" + " ".repeat(13) + "|");
+        if(diferente) {
+            System.out.print("    ");
+            System.out.print("|" + " ".repeat(13) + "|");
+        }
+
+        System.out.println();
+
+        if(this.setores[xP1][yP1].LEFT) {
+            System.out.print("*" + " ".repeat(13));
+        }
+        else {
+            System.out.print("|" + " ".repeat(13));
+        }
+        if(this.setores[xP1][yP1].RIGHT) {
+            System.out.print("*");
+        }
+        else {
+            System.out.print("|");
+        }
+
+        if (diferente) {
+            System.out.print("    ");
+            if(this.setores[xP2][yP2].LEFT) {
+            System.out.print("*" + " ".repeat(13));
+            }
+            else {
+                System.out.print("|" + " ".repeat(13));
+            }
+            if(this.setores[xP2][yP2].RIGHT) {
+                System.out.print("*");
+            }
+            else {
+                System.out.print("|");
+            }
+        }
+
+        System.out.println();
+
+        System.out.print("|  P1");
+        if(diferente) {
+            System.out.print(" ".repeat(9) + "|" + "    " + "|  P2");
+        }
+        else {
+            System.out.print("    P2   "+ "|");
+        }
+
+        System.out.println();
+        
+
+        // TODO: Pensar na melhor maneira de implementar os atributos dos jogadores
+
+        System.out.println();
+
+        if(this.setores[xP1][yP1].DOWN) {
+            System.out.print("|------*------|");
+        }
+        else {
+            System.out.print("|-------------|");
+        }
+
+        if(diferente) {
+            System.out.print("    ");
+            if(this.setores[xP2][yP2].DOWN) {
+                System.out.print("|------*------|");
+            }
+            else {
+                System.out.print("|-------------|");
+            }
+        }
+
+        System.out.println();
     }
 }

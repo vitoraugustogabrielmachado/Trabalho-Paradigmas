@@ -32,28 +32,29 @@ public class Setor {
         // define tipo do setor
         this.tipo = aleat.nextInt(3) + 1;
     }
-
+    public Inimigo[] getInimigos() {
+        return inimigos;
+    }
+    public void setInimigos(Inimigo[] inimigos) {
+        this.inimigos = inimigos;
+    }
     public void setJogadorP1() {
         this.p1Esta = true;
     }
-
     public void setJogadorP2() {
         this.p2Esta = false;
     }
-
+    public void setInicio() {
+        this.ehIncial = true;
+    }
+    public void setFinal(){
+        this.ehFinal = true;
+    }
     public void unsetJogadorP1() {
         this.p1Esta = false;
     }
 
     public void unsetJogadorP2() {
         this.p2Esta = false;
-    }
-
-    public void setInicio() {
-        this.ehIncial = true;
-    }
-
-    public void setFinal(){
-        this.ehFinal = true;
     }
 }
