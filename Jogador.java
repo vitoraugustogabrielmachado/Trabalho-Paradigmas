@@ -10,7 +10,7 @@ public abstract class Jogador implements Entidade {
 
     public Jogador(int X, int Y){
             this.X = X;
-            this.Y = Y
+            this.Y = Y;
     }
 
     public Jogador(int atk, int def, boolean vivo){
@@ -54,7 +54,7 @@ public abstract class Jogador implements Entidade {
             this.X = X;
     }
 
-    public int Y getY() {
+    public int getY() {
             return this.Y;
     }
 
@@ -68,7 +68,7 @@ public abstract class Jogador implements Entidade {
                 op.setVivo(false);
     }
 
-
+/*
     public void movimentar(Tabuleiro tab, int direcao){
         if(tab.temPorta(linha, coluna, direcao)){
             switch (direcao) {
@@ -90,14 +90,14 @@ public abstract class Jogador implements Entidade {
             }
         }
     }
-
+*/
     public void atacar(Jogador p){};
 
     // Recebe o setor atual do jogador
     public void procurar(Setor setor){
         Random random = new Random();
         int num = random.nextInt(6)+1;
-        switch (chance) {
+        switch (num) {
             case 4:
                 this.def++;
                 break;

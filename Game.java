@@ -33,19 +33,18 @@ da forma q ela mostrou no pdf, eu ax q base ta certa, tipo atk restaurar e tals,
 
 */
 
-import java.util.Random;
+// import java.util.Random;
 
 public class Game {
-    public Tabuleiro [][] table;
+    public Tabuleiro table;
     public JogadorSimples p1;
     public JogadorSuporte p2;
 
     public void init() {
-        Random aleat = new Random();
-        table = new Tabuleiro[5][5];
-        int atkp1 = aleat.nextInt(1, 7); //eu fiz essa linha so para garantir q o atk do jogsuporte vai ser menor q o atk do p1
-        p1 = new JogadorSimples(atkp1, aleat.nextInt(1, 7), true, 2, 2);
-        p2 = new JogadorSuporte(aleat.nextInt(1, atkp1), aleat.nextInt(1, 7), true, 2, 2); 
+        // Random aleat = new Random();
+        table = new Tabuleiro();
+        p1 = new JogadorSimples();//ver comentario no jogadorsimples.java
+        p2 = new JogadorSuporte(); 
     }
 
 
