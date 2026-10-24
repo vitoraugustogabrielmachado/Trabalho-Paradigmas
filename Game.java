@@ -43,8 +43,9 @@ public class Game {
     public void init() {
         Random aleat = new Random();
         table = new Tabuleiro[5][5];
-        p1 = new JogadorSimples(aleat.nextInt(7), aleat.nextInt(7), true, 3, 3);
-        p2 = new JogadorSuporte(aleat.nextInt(7), aleat.nextInt(7), true, 3, 3);
+        int atkp1 = aleat.nextInt(1, 7); //eu fiz essa linha so para garantir q o atk do jogsuporte vai ser menor q o atk do p1
+        p1 = new JogadorSimples(atkp1, aleat.nextInt(1, 7), true, 2, 2);
+        p2 = new JogadorSuporte(aleat.nextInt(1, atkp1), aleat.nextInt(1, 7), true, 2, 2); 
     }
 
 

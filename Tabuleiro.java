@@ -30,7 +30,7 @@ public class Tabuleiro {
             yFinal = aleat.nextInt(5);
         }
 
-        this.setores[aleat.nextInt(5)][aleat.nextInt(5)].setFinal();
+        this.setores[aleat.nextInt(5)][aleat.nextInt(5)].setFinal(); //nn seria xfinal e yfinal?
     }
 
     /************* GET / SET ***********/

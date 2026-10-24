@@ -1,8 +1,4 @@
 public class Inimigo implements Entidade{
-    /*
-    td q inimigo tem entidade tem ent so precisa definir o atacar aq
-    eu ax q precisa de get e set tbm, nn tenho certeza
-     */
     public int atk, def, linha, coluna;
     public boolean vivo;
 
@@ -12,12 +8,10 @@ public class Inimigo implements Entidade{
         this.setAtk(atk);
         this.setDef(def);
         this.setVivo(vivo);
-        //this.setLinha(linha);
-        //this.setColuna(coluna);
     }
 
     public void setAtk(int atk){
-        if(atk > 0) //talvez precise ter um limitante superior, mas ax q quando a funcao random funciona, ela ja ta limitada superiormente
+        if(atk > 0) 
             this.atk = atk;
     }
 
@@ -41,31 +35,14 @@ public class Inimigo implements Entidade{
     public boolean getVivo() {
         return vivo;
     }
-    /* 
-    public int getColuna() {
-        return coluna;
-    }
-
-    public int getLinha() {
-        return linha;
-    }
-
-    Coloquei como comentario isso daq pq talvez nn precise, dependendo de como a gente escolher representar os inimigos nos setores
-    public void setColuna(int coluna) {
-        this.coluna = coluna;
-    }
-    
-    public void setLinha(int linha) {
-        this.linha = linha;
-    }*/
 
     public void atacar(Inimigo oponente){};
     public void atacar(JogadorSimples p1){
-        recebeuDano(atk);
+        p1.recebeuDano(atk);
     }
 
     public void atacar(JogadorSuporte p2){
-        recebeuDano(atk);
+        p2.recebeuDano(atk);
     }
 
     public void recebeuDano(int dano){
