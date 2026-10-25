@@ -39,7 +39,7 @@ public class Tabuleiro {
 
     // Retorna tipo do setor (x, y)
     public int getTipo(int x, int y) {
-        return this.setores[x][y].tipo;
+        return this.setores[x][y].getTipo();
     }
     // Retorna o vetor de inimigos do setor (x, y)
     public Inimigo[] getInimigos(int x, int y) {
@@ -108,8 +108,8 @@ public class Tabuleiro {
                 }
                 else if(i <= 4) {
                     if(j < 4) {
-                        if(this.setores[i][j].UP && 
-                        (this.setores[i][j].p1Esta || this.setores[i][j].p2Esta)) {
+                        if(this.setores[i][j].ehPorta("UP") && 
+                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
                             System.out.print("|-*-");
                         }
                         else {
@@ -117,8 +117,8 @@ public class Tabuleiro {
                         }
                     }
                     else {
-                        if(this.setores[i][j].UP && 
-                        (this.setores[i][j].p1Esta || this.setores[i][j].p2Esta)) {
+                        if(this.setores[i][j].ehPorta("UP") && 
+                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
                             System.out.print("|-*-|");
                         }
                         else {
@@ -133,19 +133,19 @@ public class Tabuleiro {
 
             for(int j = 0; j < 5; j++) {
                 String symbol;
-                    if(this.setores[i][j].ehFinal) {
+                    if(this.setores[i][j].getEhFinal()) {
                         symbol = " X ";
                     }
-                    else if(this.setores[i][j].ehIncial) {
+                    else if(this.setores[i][j].getEhInicial()) {
                         symbol = " C ";
                     }
-                    else if(this.setores[i][j].p1Esta && this.setores[i][j].p2Esta) {
+                    else if(this.setores[i][j].getEhInicial() && this.setores[i][j].getP2Esta()) {
                         symbol = " P ";
                     }
-                    else if(this.setores[i][j].p1Esta) {
+                    else if(this.setores[i][j].getP1Esta()) {
                         symbol = "P1 ";
                     }
-                    else if(this.setores[i][j].p2Esta) {
+                    else if(this.setores[i][j].getP2Esta()) {
                         symbol = "P2 ";
                     }
                     else {
@@ -156,8 +156,8 @@ public class Tabuleiro {
                     System.out.print(symbol);
                 }
                 else if(j < 4) {
-                    if(this.setores[i][j].LEFT && 
-                        (this.setores[i][j].p1Esta || this.setores[i][j].p2Esta)) {
+                    if(this.setores[i][j].ehPorta("LEFT") && 
+                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
                         System.out.print("*");
                     }
                     else {
@@ -166,8 +166,8 @@ public class Tabuleiro {
                     System.out.print(symbol);
                 }
                 else {
-                    if(this.setores[i][j].LEFT && 
-                        (this.setores[i][j].p1Esta || this.setores[i][j].p2Esta)) {
+                    if(this.setores[i][j].ehPorta("LEFT") && 
+                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
                         System.out.print("*");
                     }
                     else {
@@ -197,11 +197,11 @@ public class Tabuleiro {
 
         for (int i = 0; i < 5; i++) {
             for(int j = 0; j < 5; j++) {
-                if(this.setores[i][j].p1Esta) {
+                if(this.setores[i][j].getP1Esta()) {
                     xP1 = i;
                     yP1 = j;            
                 }
-                else if(this.setores[i][j].p2Esta) {
+                else if(this.setores[i][j].getP2Esta()) {
                     xP2 = i;
                     yP2 = j;
                 }
@@ -221,7 +221,7 @@ public class Tabuleiro {
 
         System.out.println();
         
-        if(this.setores[xP1][yP1].UP) {
+        if(this.setores[xP1][yP1].ehPorta("UP")) {
             System.out.print("|------*------|");
         }
         else {
@@ -230,7 +230,7 @@ public class Tabuleiro {
 
         if(diferente) {
             System.out.print("    ");
-            if(this.setores[xP2][yP2].UP) {
+            if(this.setores[xP2][yP2].ehPorta("UP")) {
                 System.out.print("|------*------|");
             }
             else {
@@ -272,13 +272,13 @@ public class Tabuleiro {
 
         System.out.println();
 
-        if(this.setores[xP1][yP1].LEFT) {
+        if(this.setores[xP1][yP1].ehPorta("LEFT")) {
             System.out.print("*" + " ".repeat(13));
         }
         else {
             System.out.print("|" + " ".repeat(13));
         }
-        if(this.setores[xP1][yP1].RIGHT) {
+        if(this.setores[xP1][yP1].ehPorta("RIGHT")) {
             System.out.print("*");
         }
         else {
@@ -287,13 +287,13 @@ public class Tabuleiro {
 
         if (diferente) {
             System.out.print("    ");
-            if(this.setores[xP2][yP2].LEFT) {
+            if(this.setores[xP2][yP2].ehPorta("LEFT")) {
             System.out.print("*" + " ".repeat(13));
             }
             else {
                 System.out.print("|" + " ".repeat(13));
             }
-            if(this.setores[xP2][yP2].RIGHT) {
+            if(this.setores[xP2][yP2].ehPorta("RIGHT")) {
                 System.out.print("*");
             }
             else {
@@ -320,7 +320,7 @@ public class Tabuleiro {
 
         System.out.println();
 
-        if(this.setores[xP1][yP1].DOWN) {
+        if(this.setores[xP1][yP1].ehPorta("DOWN")) {
             System.out.print("|------*------|");
         }
         else {
@@ -329,7 +329,7 @@ public class Tabuleiro {
 
         if(diferente) {
             System.out.print("    ");
-            if(this.setores[xP2][yP2].DOWN) {
+            if(this.setores[xP2][yP2].ehPorta("DOWN")) {
                 System.out.print("|------*------|");
             }
             else {

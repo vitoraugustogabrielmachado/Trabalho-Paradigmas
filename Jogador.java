@@ -106,8 +106,8 @@ public abstract class Jogador implements Entidade {
                 break;
             case 6:
                 for (int i = 0; i < 3; i++)
-                        if (setor.inimigos[i].isVivo() == true)
-                                setor.inimigos[i].setDef(setor.inimigos[i].getDef() - 1);
+                        if (setor.getInimigos()[i].isVivo() == true)
+                                setor.getInimigos()[i].setDef(setor.getInimigos()[i].getDef() - 1);
                 break;
             default:
                 System.out.println("Nada encontrado");
