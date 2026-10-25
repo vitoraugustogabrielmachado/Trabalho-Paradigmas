@@ -3,12 +3,11 @@ import java.util.Random;
 /*  TODO: Definir as portas abertas; melhorar, comentar e otimizar código de impressão;
 //  TALVEZ SEJA MELHOR COLOCAR O MÉTODO imprimeSetorJogadores(); em uma classe que contenha ambos atributos
 //  Adaptar imprimeSetorJogadores(); com o restante do código;
-//  Analisar o encapsulamento tanto de Tabuleiro quanto Setor
 */
 
 public class Tabuleiro {
-    public String titulo = "Antivírus por um dia"; // Podemos colocar isso no construtor para receber por parâmetro
-    public Setor[][] setores;
+    private String titulo = "Antivírus por um dia"; // Podemos colocar isso no construtor para receber por parâmetro
+    private final Setor[][] setores;
     
     public Tabuleiro() {
         Random aleat = new Random();
@@ -34,7 +33,10 @@ public class Tabuleiro {
 
         this.setores[xFinal][yFinal].setFinal();
     }
-
+    public Tabuleiro(String titulo) {
+        this();
+        this.titulo = titulo;
+    }
     /************* GET / SET ***********/
 
     // Retorna tipo do setor (x, y)

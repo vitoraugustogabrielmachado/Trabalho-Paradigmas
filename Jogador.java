@@ -93,7 +93,7 @@ public abstract class Jogador implements Entidade {
 */
     public void atacar(Jogador p){};
 
-    // Recebe o setor atual do jogador
+    // Recebe o setor atual do jogador **Acho que o ideal seria receber apenas os inimigos
     public void procurar(Setor setor){
         Random random = new Random();
         int num = random.nextInt(6)+1;
