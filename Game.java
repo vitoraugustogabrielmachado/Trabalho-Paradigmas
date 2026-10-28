@@ -33,16 +33,16 @@ da forma q ela mostrou no pdf, eu ax q base ta certa, tipo atk restaurar e tals,
 
 */
 
-//import java.util.Random;
+// import java.util.Random;
 
 public class Game {
-    public Tabuleiro [][] table;
+    public Tabuleiro table;
     public JogadorSimples p1;
     public JogadorSuporte p2;
 
     public void init() {
-        //Random aleat = new Random();
-        table = new Tabuleiro[5][5];
+        // Random aleat = new Random();
+        table = new Tabuleiro();
         p1 = new JogadorSimples();//ver comentario no jogadorsimples.java
         p2 = new JogadorSuporte(); 
     }

@@ -68,7 +68,7 @@ public abstract class Jogador implements Entidade {
                 op.setVivo(false);
     }
 
-/* 
+/*
     public void movimentar(Tabuleiro tab, int direcao){
         if(tab.temPorta(linha, coluna, direcao)){
             switch (direcao) {
@@ -93,7 +93,7 @@ public abstract class Jogador implements Entidade {
 */
     public void atacar(Jogador p){};
 
-    // Recebe o setor atual do jogador
+    // Recebe o setor atual do jogador **Acho que o ideal seria receber apenas os inimigos
     public void procurar(Setor setor){
         Random random = new Random();
         int num = random.nextInt(6)+1;
@@ -106,8 +106,8 @@ public abstract class Jogador implements Entidade {
                 break;
             case 6:
                 for (int i = 0; i < 3; i++)
-                        if (setor.inimigos[i].isVivo() == true)
-                                setor.inimigos[i].setDef(setor.inimigos[i].getDef() - 1);
+                        if (setor.getInimigos()[i].isVivo() == true)
+                                setor.getInimigos()[i].setDef(setor.getInimigos()[i].getDef() - 1);
                 break;
             default:
                 System.out.println("Nada encontrado");

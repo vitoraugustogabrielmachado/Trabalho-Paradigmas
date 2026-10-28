@@ -1,11 +1,11 @@
 import java.util.Random;
 
 public class Setor {
-    public int x, y;
-    public Inimigo[] inimigos;
-    public Boolean ehFinal, ehIncial, p1Esta, p2Esta;
-    public Boolean UP, DOWN, LEFT, RIGHT; //Portas == True; False == 0
-    public int tipo; // 1 -> Normal; 2 -> Oculto; 3 -> Privado
+    private int x, y;
+    private Inimigo[] inimigos;
+    private Boolean ehFinal, ehIncial, p1Esta, p2Esta;
+    private final Boolean UP, DOWN, LEFT, RIGHT; //Portas == True; False == 0
+    private final int tipo; // 1 -> Normal; 2 -> Oculto; 3 -> Privado
 
     public Setor(int x, int y) {
         Random aleat = new Random();
@@ -32,8 +32,25 @@ public class Setor {
         // define tipo do setor
         this.tipo = aleat.nextInt(3) + 1;
     }
+
+    /********* GET/SET **********/
     public Inimigo[] getInimigos() {
         return inimigos;
+    }
+    public int getTipo() {
+        return this.tipo;
+    }
+    public boolean getEhFinal() {
+        return this.ehFinal;
+    }
+    public boolean getEhInicial() {
+        return this.ehIncial;
+    }
+    public boolean getP1Esta() {
+        return this.p1Esta;
+    }
+    public boolean getP2Esta() {
+        return this.p2Esta;
     }
     public void setInimigos(Inimigo[] inimigos) {
         this.inimigos = inimigos;
@@ -53,8 +70,18 @@ public class Setor {
     public void unsetJogadorP1() {
         this.p1Esta = false;
     }
-
     public void unsetJogadorP2() {
         this.p2Esta = false;
+    }
+
+    public boolean ehPorta(String direcao){
+        switch (direcao) {
+            case "UP": return this.UP;
+            case "DOWN": return this.DOWN;
+            case "LEFT": return this.LEFT;
+            case "RIGHT": return this.RIGHT;
+            default:
+                return false;
+        }
     }
 }
