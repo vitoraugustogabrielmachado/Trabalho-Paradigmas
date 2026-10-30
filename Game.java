@@ -58,11 +58,65 @@ public class Game {
             acaop2
             inimigos
         }
+        cada jogador joga 2 vzs, ou seja eh p1, p1, p2, p2, e ai os inimigos de CADA setor(p1 e p2 podem estar em setores diferentes)
+
+        imprimir tabuleiro
+        enquanto turnos != 25, nao chegou no objetivo e os players nn estao mortos{
+            determinar quem esta jogando agr (variaveis do tipo bool e um contador talvez)
+            se utilizar um contador, tipo q some ate 4 e resete no 4, precisa verificar qual eh o numero do contador aq
+            #######################acao do p1#######################
+            receber input
+                caso seja um movimento
+                    verificar se tem inimigos vivos no setor do player que esta jogando
+                        caso nn tenha 
+                            chamar movimento do jogador 
+                        caso tenha
+                            impedir movimento e sair daq para poder ler o input dnv
+                caso seja um ataque
+                    verificar se tem inimigos vivos no setor do player que esta jogando
+                        caso nn tenha 
+                            impedir ataque e sair daq para poder ler o input dnv
+                        caso tenha
+                            verificar o tipo do setor
+                                caso seja oculto
+                                    calcular uma "probabilidade" de acerto(talvez isso deva ser um novo metodo para ficar melhor)
+                                caso nn seja
+                                    atacar o primeiro inimigo (quando imprime o setor, tem alguma verificacao se os inimigos estao vivos?)
+                                    (ou melhor, a gente atualiza os inimigos em algum ponto?)
+                caso seja uma procura 
+                    verificar o tipo do setor
+                        caso seja privado
+                            impedir procura e sair daq para poder ler o input dnv
+                        caso nn seja 
+                            realizar a procura
+
+            #######################acao do p2#######################
+            msm coisa q acima, so q agr pro p2(julgo q eh preciso fazer isso pq quando a gente vai chamar um metodo no codigo acima a gente fala
+            p1.movimento, ent precisa ter p2.movimento no codigo abaixo, da para colocar em metodos que fica melhor, mas por ora coloca aq msm e 
+            dps a gente altera pra deixar mais bunito)
+            
+            #######################acao dos inimigos#######################
+                verificar se tem inimigos vivos no setor do p1
+                    caso tenha
+                        atacar p1
+                    caso nn tenha
+                        nd acontece
+                verificar se tem inimigos vivos no setor do p2
+                    caso tenha
+                        atacar p2
+                    caso nn tenha
+                        nd acontece
+
+        }
         */
     }
 
     public void end() {
-
+        /*
+        verificar se o jogo foi terminado por ter sido concluido ou por outra situaçao
+        aq nn eh c ent nn precisa dar free, oq eu ax q deve ter aq eh um system.out para falar parabens ou falha
+        nn sei se vao querer colocar mais alguma coisa aq
+        */
     }
 
 }

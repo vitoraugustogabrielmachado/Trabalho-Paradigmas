@@ -68,29 +68,32 @@ public abstract class Jogador implements Entidade {
                 op.setVivo(false);
     }
 
-/*
-    public void movimentar(Tabuleiro tab, int direcao){
-        if(tab.temPorta(linha, coluna, direcao)){
+    // considero que na main foi verificado se ha inimigos vivos, pq isso impossibilita o movimento
+    public void movimentar(Tabuleiro tab, String direcao){
+        if(tab.movimentoLiberado(this.Y, this.X, direcao)){ 
             switch (direcao) {
-                case Tabuleiro.NORTE:
-                    linha--;
+                case "UP":
+                    this.Y--;
                     break;
 
-                case Tabuleiro.SUL:
-                    linha++;
+                case "DOWN":
+                    this.Y++;
                     break;
 
-                case Tabuleiro.LESTE:
-                    coluna++;
+                case "RIGHT":
+                    this.X++;
                     break;
 
-                case Tabuleiro.OESTE:
-                    coluna--;
+                case "LEFT":
+                    this.X--;
                     break;
             }
         }
+        else{
+            System.out.println("Nao é possivel ir para " + direcao); //mesma questao do comentario do metodo abaixo
+        }
     }
-*/
+
     public void atacar(Jogador p){};
 
     // Recebe o setor atual do jogador **Acho que o ideal seria receber apenas os inimigos
@@ -105,12 +108,12 @@ public abstract class Jogador implements Entidade {
                 this.def += 2;
                 break;
             case 6:
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < setor.getInimigos().length; i++) //ax q assim funciona, por mais q dps a gente tem q mudar pra colecoes
                         if (setor.getInimigos()[i].isVivo() == true)
                                 setor.getInimigos()[i].setDef(setor.getInimigos()[i].getDef() - 1);
                 break;
             default:
-                System.out.println("Nada encontrado");
+                System.out.println("Nada encontrado"); //esse print talvez de errado, tem q posicionar ele em algum lugar, depende de onde ele vai imprimir
                 break;
         }
     }
