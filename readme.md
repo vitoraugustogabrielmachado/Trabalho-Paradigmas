@@ -7,14 +7,15 @@
 - `Setor setores[][]` → Uma matriz de setores
 
 ### Métodos
-
+- `getSetor(int x, int y);` -> Retorna o setor (x, y)
 - `getTipo(int x, int y);` → Retorna o tipo do setor (x, y)
 - `getInimigos(int x, int y);` → Retorna o vetor de inimigos de setor (x, y)
-- `setInimigos(int x, int y, Inimigo[] inimigos);` → Substitui o vetor de inimigos do setor (x, y);
-- `p1Entrou(int x, int y);` → Define que p1 entrou no setor (x, y)
-- `p2Entrou(int x, int y);` → Define que p2 entrou no setor (x, y)
-- `p1Saiu(int x, int y);` → Define que p1 saiu do setor (x, y)
-- `p2Saiu(int x, int y);` → Define que p2 saiu do setor (x, y)
+- `setSetor(int x, int y);` -> Substitui o setor (x, y) por "setor"
+- `setInimigos(int x, int y, Inimigo[] inimigos);` → Substitui o vetor de inimigos do setor (x, y)
+- `setJogador(JogadorSimples p1);` → Define que p1 entrou no setor em que se encontra
+- `setJogador(JogadorSuporte p2);` → Define que p2 entrou no setor em que se encontra
+- `unsetJogador(JogadorSimples p1);` → Define que p1 saiu do setor em que se encontra
+- `unsetJogador(JogadorSuporte p1);` → Define que p2 saiu do setor em que se encontra
 - `movimentoLiberado(int x, int y, String porta);` -> retorna "true" caso a porta "porta" do setor (x, y) estiver aberta e false CC.
     OBS: porta = "UP"|"DOWN"|"LEFT"|"RIGHT".
 - `imprimeTabuleiro();` → Imprime o tabuleiro

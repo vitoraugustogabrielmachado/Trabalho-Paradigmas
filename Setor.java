@@ -1,16 +1,16 @@
 import java.util.Random;
 
 public class Setor {
-    private int x, y;
+    private Jogador[] jogadores;
     private Inimigo[] inimigos;
     private Boolean ehFinal, ehIncial, p1Esta, p2Esta;
     private final Boolean UP, DOWN, LEFT, RIGHT; //Portas == True; False == 0
     private final int tipo; // 1 -> Normal; 2 -> Oculto; 3 -> Privado
 
-    public Setor(int x, int y) {
+    public Setor() {
         Random aleat = new Random();
-        this.x = x;
-        this.y = y;
+
+        this.jogadores = new Jogador[2];
 
         inimigos = new Inimigo[aleat.nextInt(3) + 1];
         // Inicializa todos os inimigos do setor
@@ -34,6 +34,11 @@ public class Setor {
     }
 
     /********* GET/SET **********/
+    /* Se i == 0 -> Retorna JogadorSimples p1
+    // Se i == 1 -> Retorna JogadorSuporte p2*/
+    public Jogador getJogador(int i) {
+        return this.jogadores[i];
+    }
     public Inimigo[] getInimigos() {
         return inimigos;
     }
@@ -55,11 +60,13 @@ public class Setor {
     public void setInimigos(Inimigo[] inimigos) {
         this.inimigos = inimigos;
     }
-    public void setJogadorP1() {
+    public void setJogador(JogadorSimples p1) {
+        this.jogadores[0] = p1;
         this.p1Esta = true;
     }
-    public void setJogadorP2() {
-        this.p2Esta = false;
+    public void setJogador(JogadorSuporte p2) {
+        this.jogadores[1] = p2;
+        this.p2Esta = true;
     }
     public void setInicio() {
         this.ehIncial = true;
@@ -67,13 +74,12 @@ public class Setor {
     public void setFinal(){
         this.ehFinal = true;
     }
-    public void unsetJogadorP1() {
+    public void unsetJogador(JogadorSimples p1) {
         this.p1Esta = false;
     }
-    public void unsetJogadorP2() {
+    public void unsetJogador(JogadorSuporte p2) {
         this.p2Esta = false;
     }
-
     public boolean ehPorta(String direcao){
         switch (direcao) {
             case "UP": return this.UP;
