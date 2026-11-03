@@ -34,21 +34,85 @@ da forma q ela mostrou no pdf, eu ax q base ta certa, tipo atk restaurar e tals,
 */
 
 // import java.util.Random;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Game {
-    public Tabuleiro table;
+    public Tabuleiro tab;
     public JogadorSimples p1;
     public JogadorSuporte p2;
 
     public void init() {
         // Random aleat = new Random();
-        table = new Tabuleiro();
+        tab = new Tabuleiro();
         p1 = new JogadorSimples();//ver comentario no jogadorsimples.java
         p2 = new JogadorSuporte(); 
+
+        tab.setJogador(p1);
+        tab.setJogador(p2);
     }
 
-
     public void play() {
+        Scanner scanner = new Scanner(System.in);
+
+        int ciclos = 0;
+        int vencedor = 0;
+
+        while (ciclos < 25 && (p1.getDef() > 0 || p2.getDef() > 0)){
+            tab.imprimeTabuleiro(); 
+
+            if (p1.getDef() > 0)
+                if (p1.turno(scanner, tab, p1)) {
+                    vencedor = 1;
+                    break;
+                }
+
+            if (p2.getDef() > 0)
+                if (p2.turno(scanner, tab, p1)){
+                    vencedor = 2;
+                    break;
+                }
+
+            if (p1.getX() != p2.getX() || p1.getY() != p2.getY()){
+                Setor set1 = tab.getSetor(p1.getX(), p1.getY());
+                Setor set2 = tab.getSetor(p2.getX(), p2.getY());
+
+                for (int i = 0; i < set1.getInimigos().size(); i++){
+                    Inimigo op = set1.getInimigos().get(i);
+
+                    if (op.isVivo() && p1.isVivo()) op.atacar(p1);
+                }
+
+                for (int i = 0; i < set2.getInimigos().size() ; i++){
+                    Inimigo op = set2.getInimigos().get(i);
+
+                    if (op.isVivo() && p2.isVivo()) op.atacar(p2);
+                }
+            }
+            else {
+                Setor set = tab.getSetor(p1.getX(), p1.getY());
+
+                for (int i = 0; i < set.getInimigos().size(); i++){
+                    Inimigo op = set.getInimigos().get(i);
+                    if (op.isVivo() && p1.isVivo()) op.atacar(p1);
+                    if (op.isVivo() && p2.isVivo()) op.atacar(p2);
+                }
+            }
+
+            ciclos++;
+        }
+
+        System.out.println("Fim de jogo!\n");
+        
+        if (!p1.isVivo() && !p2.isVivo())
+            System.out.println("Vocês foram destruídos pelos vírus...");
+        else if (ciclos >= 25)
+            System.out.println("O limite de ciclos foi atingido...");
+        else
+            System.out.printf("Parabéns! O jogador P%d erradicou a ameaça com sucesso!\n", vencedor);
+
+        scanner.close();
+        
         /*
         inicializar players
         while(turnos != 25, alcancado == 0, mortos == 0){

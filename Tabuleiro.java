@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.ArrayList;
 
 /* TODO: Definir as portas abertas; melhorar, comentar e otimizar código de impressão;
 // Melhor definir as portas no contrutor do tabuleiro; Eu estava pensando em fazer o contrutor de setor
@@ -16,7 +17,8 @@ public class Tabuleiro {
         // Inicializa setor por setor;
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
-                this.setores[x][y] = new Setor();
+                if (x == 2 && y == 2) this.setores[2][2] = new Setor(true);
+                else this.setores[x][y] = new Setor();
             }
         }
         // Escolhe o setor do meio como incial
@@ -48,7 +50,7 @@ public class Tabuleiro {
         return this.setores[x][y].getTipo();
     }
     // Retorna o vetor de inimigos do setor (x, y)
-    public Inimigo[] getInimigos(int x, int y) {
+    public ArrayList<Inimigo> getInimigos(int x, int y) {
         return this.setores[x][y].getInimigos();
     }
     // Substitui o setor (x, y) por "setor"
@@ -56,8 +58,15 @@ public class Tabuleiro {
         this.setores[x][y] = setor;
     }
     // Substitui o vetor de inimigos do setor (x, y) pelo vetor parâmetro
-    public void setInimigos(int x, int y, Inimigo[] inimigos) {
+    public void setInimigos(int x, int y, ArrayList<Inimigo> inimigos) {
         this.setores[x][y].setInimigos(inimigos);
+    }
+    // Indica que p está no setor (x, y)
+    public void setJogador(Jogador p) {
+        if (p instanceof JogadorSimples)
+            this.setores[p.getX()][p.getY()].setJogador((JogadorSimples) p);
+        if (p instanceof JogadorSuporte)
+            this.setores[p.getX()][p.getY()].setJogador((JogadorSuporte) p);
     }
     // Indica que p1 está no setor (x, y)
     public void setJogador(JogadorSimples p1) {
@@ -66,6 +75,13 @@ public class Tabuleiro {
     // Indica que p2 está no setor (x, y)
     public void setJogador(JogadorSuporte p2) {
         this.setores[p2.getX()][p2.getY()].setJogador(p2);
+    }
+    // Indica que p não está ou saiu do setor (x, y)
+    public void unsetJogador(Jogador p) {
+        if (p instanceof JogadorSimples)
+            this.setores[p.getX()][p.getY()].unsetJogador((JogadorSimples) p);
+        if (p instanceof JogadorSuporte)
+            this.setores[p.getX()][p.getY()].unsetJogador((JogadorSuporte) p);
     }
     // Indica que p1 não está ou saiu do setor (x, y)
     public void unsetJogador(JogadorSimples p1) {
@@ -264,17 +280,17 @@ public class Tabuleiro {
 
         System.out.println();
 
-        Inimigo[] inimigos;
+        ArrayList<Inimigo> inimigos;
 
         if(p1.vivo) {
             inimigos = this.setores[p1.X][p1.Y].getInimigos();
             System.out.print("|");
 
-            for(int i = 0; i < inimigos.length; i++) {
+            for(int i = 0; i < inimigos.size() ; i++) {
                 System.out.print(" ");
-                System.out.print(inimigos[i].getAtk() + "/" + inimigos[i].getDef());
+                System.out.print(inimigos.get(i).getAtk() + "/" + inimigos.get(i).getDef());
             }
-            System.out.print(" ".repeat(13 - 4 * inimigos.length) + "|");
+            System.out.print(" ".repeat(13 - 4 * inimigos.size() ) + "|");
 
             System.out.print("    ");
         }
@@ -283,11 +299,11 @@ public class Tabuleiro {
 
             System.out.print("|");
 
-            for(int i = 0; i < inimigos.length; i++) {
+            for(int i = 0; i < inimigos.size() ; i++) {
                 System.out.print(" ");
-                System.out.print(inimigos[i].getAtk() + "/" + inimigos[i].getDef());
+                System.out.print(inimigos.get(i).getAtk() + "/" + inimigos.get(i).getDef());
             }
-            System.out.print(" ".repeat(13 - 4 * inimigos.length) + "|");
+            System.out.print(" ".repeat(13 - 4 * inimigos.size() ) + "|");
         }
         
         System.out.println();

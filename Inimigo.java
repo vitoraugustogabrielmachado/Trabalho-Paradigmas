@@ -33,7 +33,9 @@ public class Inimigo implements Entidade{
     }
 
     public void setDef(int def) {
-        if(def > 0 && def < 4)
+        if (def <= 0)
+            this.def = 0;
+        else if(def < 4)
             this.def = def;
     }
 
@@ -55,10 +57,15 @@ public class Inimigo implements Entidade{
     public void atacar(Jogador p){
         Random random = new Random();
         int num = random.nextInt(6)+1;
-        if (num % 2 == 0) {
-            p.setDef(p.getDef()-this.atk);
-            if (p.getDef() <= 0)
-                    p.setVivo(false);
+        if (num % 2 == 0) 
+            p.dano(this.atk);
+    }
+
+    public void dano(int dano){
+        this.def -= dano;
+        if (this.def <= 0){
+            this.def = 0;
+            this.vivo = false;
         }
     }
 }

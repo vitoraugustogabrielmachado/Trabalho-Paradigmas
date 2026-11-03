@@ -1,8 +1,9 @@
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Setor {
     private Jogador[] jogadores;
-    private Inimigo[] inimigos;
+    private ArrayList<Inimigo> inimigos;
     private Boolean ehFinal, ehIncial, p1Esta, p2Esta;
     private final Boolean UP, DOWN, LEFT, RIGHT; //Portas == True; False == 0
     private final int tipo; // 1 -> Normal; 2 -> Oculto; 3 -> Privado
@@ -12,10 +13,12 @@ public class Setor {
 
         this.jogadores = new Jogador[2];
 
-        inimigos = new Inimigo[aleat.nextInt(3) + 1];
+        int qtd = aleat.nextInt(3) + 1;
+        inimigos = new ArrayList<Inimigo>(qtd);
         // Inicializa todos os inimigos do setor
-        for(int i = 0; i < inimigos.length; i++) {
-            inimigos[i] = new Inimigo(aleat.nextInt(1, 7), aleat.nextInt(1, 7), true);
+        for(int i = 0; i < qtd; i++) {
+            int num = aleat.nextInt(3) + 1;
+            inimigos.add(new Inimigo(num, num, true));
         }
 
         // Tudo inicia falso
@@ -24,10 +27,31 @@ public class Setor {
         this.p1Esta = false;
         this.p2Esta = false;
 
-        this.UP = false;
-        this.DOWN = false;
-        this.LEFT= false;
-        this.RIGHT = false;
+        this.UP = true;
+        this.DOWN = true;
+        this.LEFT= true;
+        this.RIGHT = true;
+
+        // define tipo do setor
+        this.tipo = aleat.nextInt(3) + 1;
+    }
+
+    public Setor(boolean ehInicial){    
+        inimigos = new ArrayList<Inimigo>(0);
+
+        this.jogadores = new Jogador[2];
+
+        this.ehIncial = true;
+        this.ehFinal = false;
+        this.p1Esta = false;
+        this.p2Esta = false;
+
+        this.UP = true;
+        this.DOWN = true;
+        this.LEFT= true;
+        this.RIGHT = true;
+
+        Random aleat = new Random();
 
         // define tipo do setor
         this.tipo = aleat.nextInt(3) + 1;
@@ -39,7 +63,7 @@ public class Setor {
     public Jogador getJogador(int i) {
         return this.jogadores[i];
     }
-    public Inimigo[] getInimigos() {
+    public ArrayList<Inimigo> getInimigos() {
         return inimigos;
     }
     public int getTipo() {
@@ -57,7 +81,7 @@ public class Setor {
     public boolean getP2Esta() {
         return this.p2Esta;
     }
-    public void setInimigos(Inimigo[] inimigos) {
+    public void setInimigos(ArrayList<Inimigo> inimigos) {
         this.inimigos = inimigos;
     }
     public void setJogador(JogadorSimples p1) {
@@ -89,5 +113,14 @@ public class Setor {
             default:
                 return false;
         }
+    }
+    
+    public int qtdInimigosVivos(){
+        int qtd = 0;
+        for (int i = 0; i < this.getInimigos().size(); i++)
+            if (this.getInimigos().get(i).isVivo())
+                qtd++;
+
+        return qtd;
     }
 }
