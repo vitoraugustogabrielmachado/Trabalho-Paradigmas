@@ -28,7 +28,7 @@ public class Tabuleiro {
         int yFinal = aleat.nextInt(5);
 
         // Evita escolher começo como fim
-         while(xFinal == 2 && yFinal == 2) {
+        while(xFinal == 2 && yFinal == 2) {
             xFinal = aleat.nextInt(5);
             yFinal = aleat.nextInt(5);
         }
@@ -47,7 +47,7 @@ public class Tabuleiro {
     }
     // Retorna tipo do setor (x, y)
     public int getTipo(int x, int y) {
-        return this.setores[x][y].getTipo();
+        return this.setores[x][y].getTipoSetor();
     }
     // Retorna o vetor de inimigos do setor (x, y)
     public ArrayList<Inimigo> getInimigos(int x, int y) {
@@ -222,7 +222,7 @@ public class Tabuleiro {
     // p1Esta e p2Esta definem a impressão dos jogadores
     // TODO: comentar, limpar/otimizar e, talvez, colocar em outra classe */
     private void imprimeSetorJogadores() {
-        Jogador p1 = new JogadorSimples();
+        Jogador p1 = new JogadorSimples(); //TODO: Pqq ta setando os jogadores aq tbm?
         p1.setVivo(false);
         Jogador p2 = new JogadorSuporte();
         p2.setVivo(false);
@@ -241,7 +241,7 @@ public class Tabuleiro {
         if(!p1.vivo && !p2.vivo)
             return;
 
-        // Define se será impresso um ou 2 setores;
+        // Define se será impresso um ou 2 setores; 
         if(p1.vivo && p2.vivo) {
             if (p1.X != p2.X || p1.Y != p2.Y) {
                 diferente = true;
@@ -250,12 +250,25 @@ public class Tabuleiro {
         else if(!p1.vivo && p2.vivo)
             diferente = true;
 
+        int tipo1 = this.setores[p1.X][p1.Y].getTipoSetor();
+        int tipo2 = this.setores[p2.X][p2.Y].getTipoSetor();
+
         if(p1.vivo) {
             System.out.println();
-            System.out.print("  " + "Setor [" + (p1.X + 1) + "," + (p1.Y + 1) + "]" + "      ");
+            if(tipo1 == 1)
+                System.out.print("  " + "Setor Normal [" + (p1.X + 1) + "," + (p1.Y + 1) + "]" + "      ");
+            else if(tipo1 == 2)
+                System.out.print("  " + "Setor Oculto [" + (p1.X + 1) + "," + (p1.Y + 1) + "]" + "      ");
+            else if(tipo1 == 3)
+                System.out.print("  " + "Setor Privado [" + (p1.X + 1) + "," + (p1.Y + 1) + "]" + "      ");
         }
         if(diferente && p2.vivo) {
-            System.out.print("  " + "Setor [" + (p2.X + 1) + "," + ( p2.Y + 1) + "]");
+            if(tipo2 == 1)
+                System.out.print("  " + "Setor Normal [" + (p2.X + 1) + "," + ( p2.Y + 1) + "]");
+            else if(tipo2 == 2)
+                System.out.print("  " + "Setor Oculto [" + (p2.X + 1) + "," + ( p2.Y + 1) + "]");
+            else if(tipo2 == 3)
+                System.out.print("  " + "Setor Privado [" + (p2.X + 1) + "," + ( p2.Y + 1) + "]");
         }
 
         System.out.println();

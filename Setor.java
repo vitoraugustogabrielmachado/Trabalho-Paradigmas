@@ -33,7 +33,7 @@ public class Setor {
         this.RIGHT = true;
 
         // define tipo do setor
-        this.tipo = aleat.nextInt(3) + 1;
+        this.tipo = aleat.nextInt(1, 4);
     }
 
     public Setor(boolean ehInicial){    
@@ -54,7 +54,7 @@ public class Setor {
         Random aleat = new Random();
 
         // define tipo do setor
-        this.tipo = aleat.nextInt(3) + 1;
+        this.tipo = aleat.nextInt(1, 4);
     }
 
     /********* GET/SET **********/
@@ -66,7 +66,7 @@ public class Setor {
     public ArrayList<Inimigo> getInimigos() {
         return inimigos;
     }
-    public int getTipo() {
+    public int getTipoSetor() {
         return this.tipo;
     }
     public boolean getEhFinal() {

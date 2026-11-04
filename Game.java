@@ -104,8 +104,10 @@ public class Game {
 
         System.out.println("Fim de jogo!\n");
         
-        if (!p1.isVivo() && !p2.isVivo())
+        if (!p1.isVivo() && !p2.isVivo()){
+            tab.imprimeTabuleiro(); 
             System.out.println("Vocês foram destruídos pelos vírus...");
+        }
         else if (ciclos >= 25)
             System.out.println("O limite de ciclos foi atingido...");
         else

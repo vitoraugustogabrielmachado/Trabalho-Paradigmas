@@ -17,6 +17,6 @@ public class JogadorSimples extends Jogador {
     }
 
     public boolean haAcao(Setor set){
-        return set.qtdInimigosVivos() > 0 || set.getTipo() != 3;
+        return set.qtdInimigosVivos() > 0 || set.getTipoSetor() != 3;
     }
 }

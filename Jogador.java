@@ -134,7 +134,7 @@ public abstract class Jogador implements Entidade {
     };
 
     public void acaoMovimentar(Scanner scanner, Tabuleiro tab){
-        Setor set = tab.getSetor(this.X, this.Y);
+        //Setor set = tab.getSetor(this.X, this.Y);
 
         while (true){
             System.out.println("Movimento: [W] Cima | [A] Esquerda | [S] Baixo | [D] Direita | [F] Ficar");
@@ -163,27 +163,30 @@ public abstract class Jogador implements Entidade {
 
     public boolean turno(Scanner scanner, Tabuleiro tab, JogadorSimples p1){
         Random aleat = new Random();
-
-        Setor set = tab.getSetor(this.X, this.Y);
-        
-        if (set.qtdInimigosVivos() == 0){
-            this.texto();
-            this.acaoMovimentar(scanner, tab);
-
-            tab.imprimeTabuleiro();
-        }
-
-        set = tab.getSetor(this.X, this.Y);
-
-        if (set.getEhFinal())
-            return true;
-
         int acoes = 2;
 
+        Setor set = tab.getSetor(this.X, this.Y);
+
+
         while (acoes > 0){
-            boolean ATK, PROC, RES;
+            boolean ATK = false, PROC = false, MOV = false;
+            MOV = set.qtdInimigosVivos() == 0;
+
+            if(MOV){
+                this.texto();
+                this.acaoMovimentar(scanner, tab);
+                acoes--;
+                tab.imprimeTabuleiro();
+                if(acoes == 0)
+                    break;
+
+                set = tab.getSetor(this.X, this.Y);
+                if (set.getEhFinal())
+                    return true;
+            }
+            set = tab.getSetor(this.X, this.Y);
             ATK = set.qtdInimigosVivos() > 0;
-            PROC = set.getTipo() != 3;
+            PROC = set.getTipoSetor() != 3;
 
             if (!this.haAcao(set))
                 break;
@@ -199,6 +202,7 @@ public abstract class Jogador implements Entidade {
                 System.out.println();
             }
 
+
             if (PROC)
                 System.out.println("Procurar: [P]");
 
@@ -212,11 +216,12 @@ public abstract class Jogador implements Entidade {
                         System.out.println("Não há inimigos.");
                         continue;
                     }
-                    if (set.getTipo() == 2)
+                    if (set.getTipoSetor() == 2){
                         if (aleat.nextInt(2) == 0)
                             this.atacar(set.getInimigos().get(0));
                         else
                             System.out.println("Ataque falhou.");
+                    }
                     else
                         this.atacar(set.getInimigos().get(0));
                 }
@@ -225,24 +230,26 @@ public abstract class Jogador implements Entidade {
                         System.out.println("Não há inimigos.");
                         continue;
                     }
-                    if (set.getTipo() == 2)
+                    if (set.getTipoSetor() == 2){
                         if (aleat.nextInt(2) == 0)
                             this.atacar(set.getInimigos().get(1));
                         else
                             System.out.println("Ataque falhou.");
+                    }
                     else
                         this.atacar(set.getInimigos().get(1));
                 }
-                else if (op.charAt(1) == '3'){
+                else if (op.charAt(1) == '3'){ 
                     if (set.getInimigos().size() < 3 || !set.getInimigos().get(2).isVivo()){
                         System.out.println("Não há inimigos.");
                         continue;
                     }
-                    if (set.getTipo() == 2)
+                    if (set.getTipoSetor() == 2){
                         if (aleat.nextInt(2) == 0)
                             this.atacar(set.getInimigos().get(2));
                         else
                             System.out.println("Ataque falhou.");
+                    }
                     else
                         this.atacar(set.getInimigos().get(2));
                 }
@@ -255,8 +262,8 @@ public abstract class Jogador implements Entidade {
                 if (!PROC){
                     System.out.println("Procurar não permitido.");
                     continue;
-                }
-                this.procurar(set);                
+                }else
+                    this.procurar(set);                
             }
             else if(!this.acoesExtras(p1, op)){
                 System.out.println("Ação não existente.");
