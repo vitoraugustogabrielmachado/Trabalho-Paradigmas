@@ -8,7 +8,7 @@ public class Setor {
     private final Boolean UP, DOWN, LEFT, RIGHT; //Portas == True; False == 0
     private final int tipo; // 1 -> Normal; 2 -> Oculto; 3 -> Privado
 
-    public Setor() {
+    public Setor(int[] portas) {
         Random aleat = new Random();
 
         this.jogadores = new Jogador[2];
@@ -27,10 +27,23 @@ public class Setor {
         this.p1Esta = false;
         this.p2Esta = false;
 
-        this.UP = true;
-        this.DOWN = true;
-        this.LEFT= true;
-        this.RIGHT = true;
+        
+        if(portas[0] == 1)
+            this.UP = true;
+        else
+            this.UP = false;
+        if(portas[1] == 1)
+            this.DOWN = true;
+        else
+            this.DOWN = false;
+        if(portas[2] == 1)
+            this.LEFT = true;
+        else
+            this.LEFT = false;
+        if(portas[3] == 1)
+            this.RIGHT = true;
+        else
+            this.RIGHT = false;
 
         // define tipo do setor
         this.tipo = aleat.nextInt(1, 4);
@@ -50,6 +63,8 @@ public class Setor {
         this.DOWN = true;
         this.LEFT= true;
         this.RIGHT = true;
+
+
 
         Random aleat = new Random();
 

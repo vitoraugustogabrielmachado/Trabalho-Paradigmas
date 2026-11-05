@@ -9,16 +9,18 @@ import java.util.ArrayList;
 public class Tabuleiro {
     private String titulo = "Antivírus por um dia"; // Podemos colocar isso no construtor para receber por parâmetro
     private final Setor[][] setores;
+    private int[] portas;
     
     public Tabuleiro() {
         Random aleat = new Random();
-
+        this.portas = new int[4];
         this.setores = new Setor[5][5];
         // Inicializa setor por setor;
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 5; x++) {
+                this.setPortas(x, y);
                 if (x == 2 && y == 2) this.setores[2][2] = new Setor(true);
-                else this.setores[x][y] = new Setor();
+                else this.setores[x][y] = new Setor(portas);
             }
         }
         // Escolhe o setor do meio como incial
@@ -48,6 +50,60 @@ public class Tabuleiro {
     // Retorna tipo do setor (x, y)
     public int getTipo(int x, int y) {
         return this.setores[x][y].getTipoSetor();
+    }
+    public void setPortas(int x, int y){
+        if(y == 0){
+            if(x == 0){
+                portas[0] = 0;
+                portas[1] = 1;
+                portas[2] = 0;
+                portas[3] = 1;
+            }else if(x == 4){
+                portas[0] = 1;
+                portas[1] = 0;
+                portas[2] = 0;
+                portas[3] = 1;
+            }else{
+                portas[0] = 1;
+                portas[1] = 1;
+                portas[2] = 0;
+                portas[3] = 1;
+            }
+        }else if(y != 0 && x == 0){
+            if(y == 4){
+                portas[0] = 0;
+                portas[1] = 1;
+                portas[2] = 1;
+                portas[3] = 0;
+            }else{
+                portas[0] = 0;
+                portas[1] = 1;
+                portas[2] = 1;
+                portas[3] = 1;
+            }
+        }else if(y == 4){
+            if(x == 4){
+                portas[0] = 1;
+                portas[1] = 0;
+                portas[2] = 1;
+                portas[3] = 0;
+            }else{
+                portas[0] = 1;
+                portas[1] = 1;
+                portas[2] = 1;
+                portas[3] = 0;
+            }
+        }else if(y != 4 && x == 4){
+            portas[0] = 1;
+            portas[1] = 0;
+            portas[2] = 1;
+            portas[3] = 1;
+        }else{
+            portas[0] = 1;
+            portas[1] = 1;
+            portas[2] = 1;
+            portas[3] = 1;
+        }
     }
     // Retorna o vetor de inimigos do setor (x, y)
     public ArrayList<Inimigo> getInimigos(int x, int y) {
@@ -136,8 +192,8 @@ public class Tabuleiro {
                 }
                 else if(i <= 4) {
                     if(j < 4) {
-                        if(this.setores[i][j].ehPorta("UP") && 
-                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
+                        if((this.setores[i][j].ehPorta("UP"))  && 
+                        (this.setores[i-1][j].getP1Esta() || this.setores[i][j].getP1Esta() || this.setores[i-1][j].getP2Esta() || this.setores[i][j].getP2Esta())) {
                             System.out.print("|-*-");
                         }
                         else {
@@ -145,13 +201,14 @@ public class Tabuleiro {
                         }
                     }
                     else {
-                        if(this.setores[i][j].ehPorta("UP") && 
-                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
+                        if((this.setores[i][j].ehPorta("UP")) && 
+                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP1Esta() || this.setores[i-1][j].getP2Esta() || this.setores[i-1][j].getP2Esta())) {
                             System.out.print("|-*-|");
                         }
                         else {
                             System.out.print("|---|");
                         }
+
                     }
                 }
             }
@@ -185,7 +242,7 @@ public class Tabuleiro {
                 }
                 else if(j < 4) {
                     if(this.setores[i][j].ehPorta("LEFT") && 
-                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
+                        (this.setores[i][j-1].getP1Esta() || this.setores[i][j].getP1Esta() || this.setores[i][j-1].getP2Esta() || this.setores[i][j].getP2Esta())) {
                         System.out.print("*");
                     }
                     else {
@@ -195,7 +252,7 @@ public class Tabuleiro {
                 }
                 else {
                     if(this.setores[i][j].ehPorta("LEFT") && 
-                        (this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta())) {
+                        (this.setores[i][j-1].getP1Esta() || this.setores[i][j].getP1Esta() || this.setores[i][j].getP2Esta() || this.setores[i][j-1].getP2Esta())) {
                         System.out.print("*");
                     }
                     else {
