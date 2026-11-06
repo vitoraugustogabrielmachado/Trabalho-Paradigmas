@@ -1,4 +1,4 @@
-import java.util.Random;
+import java.util.Random; 
 
 public class Inimigo implements Entidade{
 
@@ -13,7 +13,7 @@ public class Inimigo implements Entidade{
         int num = random.nextInt(3)+1;
         this.atk = num;
         this.def = num;
-        this.vivo = True;
+        this.vivo = true;
     };
 
     public Inimigo(int atk, int def, boolean vivo){
@@ -33,7 +33,9 @@ public class Inimigo implements Entidade{
     }
 
     public void setDef(int def) {
-        if(def > 0 && def < 4)
+        if (def <= 0)
+            this.def = 0;
+        else if(def < 4)
             this.def = def;
     }
 
@@ -41,12 +43,12 @@ public class Inimigo implements Entidade{
         return this.def;
     }
 
-    public void isVivo(boolean vivo) {
+    public boolean isVivo() {
         return this.vivo;
     }
 
-    public boolean setVivo() {
-        this.vivo = vivo
+    public void setVivo(boolean vivo) {
+        this.vivo = vivo;
     }
 
     public void atacar(Inimigo oponente){};
@@ -55,10 +57,16 @@ public class Inimigo implements Entidade{
     public void atacar(Jogador p){
         Random random = new Random();
         int num = random.nextInt(6)+1;
-        if (num % 2 == 0) {
-            p.setDef(p.getDef()-this.atk);
-            if (p.getDef() <= 0)
-                    p.setVivo(false);
+        if (num % 2 == 0) 
+            p.dano(this.atk);
+    }
+
+    public void dano(int dano){
+        this.def -= dano;
+        if (this.def <= 0){
+            this.def = 0;
+            this.vivo = false;
+            System.out.println("Inimigo morto!");
         }
     }
 }
