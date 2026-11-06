@@ -35,19 +35,28 @@ da forma q ela mostrou no pdf, eu ax q base ta certa, tipo atk restaurar e tals,
 
 // import java.util.Random;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Game {
     public Tabuleiro tab;
     public JogadorSimples p1;
     public JogadorSuporte p2;
-
+    public int ciclos;
+    public String state;
+    /* A ideia é mudar o game.play() para um switch de game.state em que ele controlará o fluxo total do começo, turnos e fim. 
+    os turnos poderiam estar em uma lista circular com ordem TURNOP1 -> TURNOP1 -> TURNOP2 -> TURNOP2 -> TURNOINIMIGOS -> TURNOP1...
+    Assim a cada ação a fila andaria e passaria o valor para game.state.
+    Caso os jogores achem a infecção game.state -> Fim
+    Caso morram Game.state -> Fim
+    Caso ciclo max -> game.state -> Fim 
+    arraydeque -> classe fodona dar uma olhada
+    */
     public void init() {
         // Random aleat = new Random();
         tab = new Tabuleiro();
         p1 = new JogadorSimples();//ver comentario no jogadorsimples.java
         p2 = new JogadorSuporte(); 
-
+        this.ciclos = 0;
+        
         tab.setJogador(p1);
         tab.setJogador(p2);
     }
@@ -55,10 +64,11 @@ public class Game {
     public void play() {
         Scanner scanner = new Scanner(System.in);
 
-        int ciclos = 0;
         int vencedor = 0;
 
+        tab.imprimeTabuleiro();
         while (ciclos < 25 && (p1.getDef() > 0 || p2.getDef() > 0)){
+	        tab.limparTela();
             tab.imprimeTabuleiro(); 
 
             if (p1.getDef() > 0)
@@ -99,12 +109,13 @@ public class Game {
                 }
             }
 
-            ciclos++;
+            this.ciclos++;
         }
 
         System.out.println("Fim de jogo!\n");
         
         if (!p1.isVivo() && !p2.isVivo()){
+            tab.limparTela();
             tab.imprimeTabuleiro(); 
             System.out.println("Vocês foram destruídos pelos vírus...");
         }

@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 public class JogadorSuporte extends Jogador{
     // Construtor padrao
@@ -37,16 +36,19 @@ public class JogadorSuporte extends Jogador{
     }
 
     @Override
-    public boolean acoesExtras(JogadorSimples p1, String op){
+    public boolean acoesExtras(JogadorSimples p1, String op, Tabuleiro tab){
+        tab.limparTela();
         if (op.length() == 2 && op.charAt(0) == 'R'){
             if (op.charAt(1) == '1'){
                 if (p1.getX() == this.getX() && p1.getY() == this.getY() && p1.isVivo()){
+                    System.out.println("DEF de P1 aumentada em 2!");
                     this.restaurar(p1);
                     return true;
                 }
                 return false;
             }
             if (op.charAt(1) == '2'){
+                System.out.println("DEF de P2 aumentada em 2!");
                 this.restaurar();
                 return true;
             }

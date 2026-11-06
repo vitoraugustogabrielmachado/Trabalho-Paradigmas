@@ -1,10 +1,11 @@
-import java.util.Random;
 import java.util.ArrayList;
+import java.util.Random;
 
 /* TODO: Definir as portas abertas; melhorar, comentar e otimizar código de impressão;
 // Melhor definir as portas no contrutor do tabuleiro; Eu estava pensando em fazer o contrutor de setor
 // receber como parametro as portas que devem ficar abertas ou um vetor de boolean em que 
 // V[0] -> UP ; V[1] -> DOWN; V[2] -> LEFT; V[3] -> RIGHT; EX -> V[0] == 1 -> setor.UP = true */
+// TODO: tirar o p1 do tabuleiro quando ele morrer
 
 public class Tabuleiro {
     private String titulo = "Antivírus por um dia"; // Podemos colocar isso no construtor para receber por parâmetro
@@ -481,4 +482,11 @@ public class Tabuleiro {
 
         System.out.println();
     }
+
+    // Metodo com codigo ANSI para limpar o terminal
+    public static void limparTela() {
+        System.out.print("\033[H\033[2J\033[3J\033c");
+        System.out.flush();
+    }
 }
+

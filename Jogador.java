@@ -106,14 +106,17 @@ public abstract class Jogador implements Entidade {
         switch (num) {
             case 4:
                 this.def++;
+                System.out.println("Defesa incrementada!");
                 break;
             case 5:
+                System.out.println("Defesa incrementada em 2!");
                 this.def += 2;
                 break;
             case 6:
                 for (int i = 0; i < setor.getInimigos().size() ; i++) //ax q assim funciona, por mais q dps a gente tem q mudar pra colecoes
                     if (setor.getInimigos().get(i).isVivo() == true)
                         setor.getInimigos().get(i).dano(1);
+                System.out.println("Todos os inimigos perderam vida!");
                 break;
             default:
                 System.out.println("Nada encontrado"); //esse print talvez de errado, tem q posicionar ele em algum lugar, depende de onde ele vai imprimir
@@ -129,7 +132,7 @@ public abstract class Jogador implements Entidade {
 
     protected void imprimirAcoesExtras(JogadorSimples p1){};
 
-    protected boolean acoesExtras(JogadorSimples p1, String op){
+    protected boolean acoesExtras(JogadorSimples p1, String op, Tabuleiro tab){
         return false;
     };
 
@@ -176,6 +179,7 @@ public abstract class Jogador implements Entidade {
                 this.texto();
                 this.acaoMovimentar(scanner, tab);
                 acoes--;
+		tab.limparTela();
                 tab.imprimeTabuleiro();
                 if(acoes == 0)
                     break;
@@ -211,47 +215,62 @@ public abstract class Jogador implements Entidade {
             String op = scanner.nextLine().toUpperCase();
 
             if (op.length() == 2 && op.charAt(0) == 'A'){
+		tab.limparTela();
                 if (op.charAt(1) == '1'){
                     if (set.getInimigos().size() == 0 || !set.getInimigos().get(0).isVivo()){
                         System.out.println("Não há inimigos.");
                         continue;
                     }
                     if (set.getTipoSetor() == 2){
-                        if (aleat.nextInt(2) == 0)
+                        if (aleat.nextInt(2) == 0) {
+                            System.out.println("Ataque bem sucedido!");
                             this.atacar(set.getInimigos().get(0));
+                        }
                         else
                             System.out.println("Ataque falhou.");
                     }
-                    else
+                    else {
+                        System.out.println("Ataque bem sucedido!");
                         this.atacar(set.getInimigos().get(0));
+                    }
                 }
                 else if (op.charAt(1) == '2'){
+		    tab.limparTela();
                     if (set.getInimigos().size() < 2 || !set.getInimigos().get(1).isVivo()){
                         System.out.println("Não há inimigos.");
                         continue;
                     }
                     if (set.getTipoSetor() == 2){
-                        if (aleat.nextInt(2) == 0)
+                        if (aleat.nextInt(2) == 0) {
+                            System.out.println("Ataque bem sucedido!");
                             this.atacar(set.getInimigos().get(1));
+                        }
                         else
                             System.out.println("Ataque falhou.");
                     }
-                    else
+                    else {
+                        System.out.println("Ataque bem sucedido!");
                         this.atacar(set.getInimigos().get(1));
+                    }
                 }
-                else if (op.charAt(1) == '3'){ 
+                else if (op.charAt(1) == '3'){
+		    tab.limparTela();	
                     if (set.getInimigos().size() < 3 || !set.getInimigos().get(2).isVivo()){
                         System.out.println("Não há inimigos.");
                         continue;
                     }
                     if (set.getTipoSetor() == 2){
-                        if (aleat.nextInt(2) == 0)
+                        if (aleat.nextInt(2) == 0) {
+                            System.out.println("Ataque bem sucedido!");
                             this.atacar(set.getInimigos().get(2));
+                        }
                         else
                             System.out.println("Ataque falhou.");
                     }
-                    else
+                    else {
+                        System.out.println("Ataque bem sucedido!");
                         this.atacar(set.getInimigos().get(2));
+                    }
                 }
                 else{
                     System.out.println("Inimigo não existente.");
@@ -259,15 +278,23 @@ public abstract class Jogador implements Entidade {
                 }
             }
             else if (op.length() == 1 && op.charAt(0) == 'P'){
+		tab.limparTela();
                 if (!PROC){
                     System.out.println("Procurar não permitido.");
                     continue;
                 }else
                     this.procurar(set);                
             }
-            else if(!this.acoesExtras(p1, op)){
+            else if(!this.acoesExtras(p1, op, tab)){
+		tab.limparTela();
                 System.out.println("Ação não existente.");
                 continue;
+            }
+
+            for(int i = 0; i < set.getInimigos().size(); i++) {
+                if(!set.getInimigos().get(i).isVivo()) {
+                    set.getInimigos().remove(i);
+                }
             }
 
             tab.imprimeTabuleiro();
@@ -283,6 +310,10 @@ public abstract class Jogador implements Entidade {
         if (this.def <= 0){
             this.def = 0;
             this.vivo = false;
+            int player;
+            if (this instanceof JogadorSimples) player = 1;
+            else player = 2;
+            System.out.println("Jogador " + player + " morto!");
         }
     }
 }
