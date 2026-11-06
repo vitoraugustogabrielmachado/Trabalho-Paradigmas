@@ -33,23 +33,91 @@ da forma q ela mostrou no pdf, eu ax q base ta certa, tipo atk restaurar e tals,
 
 */
 
-import java.util.Random;
+// import java.util.Random;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Game {
-    public Tabuleiro [][] table;
+    public Tabuleiro tab;
     public JogadorSimples p1;
     public JogadorSuporte p2;
 
     public void init() {
-        Random aleat = new Random();
-        table = new Tabuleiro[5][5];
-        int atkp1 = aleat.nextInt(1, 7); //eu fiz essa linha so para garantir q o atk do jogsuporte vai ser menor q o atk do p1
-        p1 = new JogadorSimples(atkp1, aleat.nextInt(1, 7), true, 2, 2);
-        p2 = new JogadorSuporte(aleat.nextInt(1, atkp1), aleat.nextInt(1, 7), true, 2, 2); 
+        // Random aleat = new Random();
+        tab = new Tabuleiro();
+        p1 = new JogadorSimples();//ver comentario no jogadorsimples.java
+        p2 = new JogadorSuporte(); 
+
+        tab.setJogador(p1);
+        tab.setJogador(p2);
     }
 
-
     public void play() {
+        Scanner scanner = new Scanner(System.in);
+
+        int ciclos = 0;
+        int vencedor = 0;
+
+        tab.imprimeTabuleiro();
+        while (ciclos < 25 && (p1.getDef() > 0 || p2.getDef() > 0)){
+	    //tab.limparTela();
+            //tab.imprimeTabuleiro(); 
+
+            if (p1.getDef() > 0)
+                if (p1.turno(scanner, tab, p1)) {
+                    vencedor = 1;
+                    break;
+                }
+
+            if (p2.getDef() > 0)
+                if (p2.turno(scanner, tab, p1)){
+                    vencedor = 2;
+                    break;
+                }
+
+            if (p1.getX() != p2.getX() || p1.getY() != p2.getY()){
+                Setor set1 = tab.getSetor(p1.getX(), p1.getY());
+                Setor set2 = tab.getSetor(p2.getX(), p2.getY());
+
+                for (int i = 0; i < set1.getInimigos().size(); i++){
+                    Inimigo op = set1.getInimigos().get(i);
+
+                    if (op.isVivo() && p1.isVivo()) op.atacar(p1);
+                }
+
+                for (int i = 0; i < set2.getInimigos().size() ; i++){
+                    Inimigo op = set2.getInimigos().get(i);
+
+                    if (op.isVivo() && p2.isVivo()) op.atacar(p2);
+                }
+            }
+            else {
+                Setor set = tab.getSetor(p1.getX(), p1.getY());
+
+                for (int i = 0; i < set.getInimigos().size(); i++){
+                    Inimigo op = set.getInimigos().get(i);
+                    if (op.isVivo() && p1.isVivo()) op.atacar(p1);
+                    if (op.isVivo() && p2.isVivo()) op.atacar(p2);
+                }
+            }
+
+            ciclos++;
+        }
+
+        System.out.println("Fim de jogo!\n");
+        
+        if (!p1.isVivo() && !p2.isVivo()){
+            tab.limparTela();
+            tab.imprimeTabuleiro(); 
+            System.out.println("Vocês foram destruídos pelos vírus...");
+        }
+        else if (ciclos >= 25)
+            System.out.println("O limite de ciclos foi atingido...");
+        else
+            System.out.printf("Parabéns! O jogador P%d erradicou a ameaça com sucesso!\n", vencedor);
+
+        scanner.close();
+        
         /*
         inicializar players
         while(turnos != 25, alcancado == 0, mortos == 0){
@@ -59,11 +127,65 @@ public class Game {
             acaop2
             inimigos
         }
+        cada jogador joga 2 vzs, ou seja eh p1, p1, p2, p2, e ai os inimigos de CADA setor(p1 e p2 podem estar em setores diferentes)
+
+        imprimir tabuleiro
+        enquanto turnos != 25, nao chegou no objetivo e os players nn estao mortos{
+            determinar quem esta jogando agr (variaveis do tipo bool e um contador talvez)
+            se utilizar um contador, tipo q some ate 4 e resete no 4, precisa verificar qual eh o numero do contador aq
+            #######################acao do p1#######################
+            receber input
+                caso seja um movimento
+                    verificar se tem inimigos vivos no setor do player que esta jogando
+                        caso nn tenha 
+                            chamar movimento do jogador 
+                        caso tenha
+                            impedir movimento e sair daq para poder ler o input dnv
+                caso seja um ataque
+                    verificar se tem inimigos vivos no setor do player que esta jogando
+                        caso nn tenha 
+                            impedir ataque e sair daq para poder ler o input dnv
+                        caso tenha
+                            verificar o tipo do setor
+                                caso seja oculto
+                                    calcular uma "probabilidade" de acerto(talvez isso deva ser um novo metodo para ficar melhor)
+                                caso nn seja
+                                    atacar o primeiro inimigo (quando imprime o setor, tem alguma verificacao se os inimigos estao vivos?)
+                                    (ou melhor, a gente atualiza os inimigos em algum ponto?)
+                caso seja uma procura 
+                    verificar o tipo do setor
+                        caso seja privado
+                            impedir procura e sair daq para poder ler o input dnv
+                        caso nn seja 
+                            realizar a procura
+
+            #######################acao do p2#######################
+            msm coisa q acima, so q agr pro p2(julgo q eh preciso fazer isso pq quando a gente vai chamar um metodo no codigo acima a gente fala
+            p1.movimento, ent precisa ter p2.movimento no codigo abaixo, da para colocar em metodos que fica melhor, mas por ora coloca aq msm e 
+            dps a gente altera pra deixar mais bunito)
+            
+            #######################acao dos inimigos#######################
+                verificar se tem inimigos vivos no setor do p1
+                    caso tenha
+                        atacar p1
+                    caso nn tenha
+                        nd acontece
+                verificar se tem inimigos vivos no setor do p2
+                    caso tenha
+                        atacar p2
+                    caso nn tenha
+                        nd acontece
+
+        }
         */
     }
 
     public void end() {
-
+        /*
+        verificar se o jogo foi terminado por ter sido concluido ou por outra situaçao
+        aq nn eh c ent nn precisa dar free, oq eu ax q deve ter aq eh um system.out para falar parabens ou falha
+        nn sei se vao querer colocar mais alguma coisa aq
+        */
     }
 
 }
