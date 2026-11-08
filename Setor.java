@@ -8,26 +8,28 @@ public class Setor {
     private final Boolean UP, DOWN, LEFT, RIGHT; //Portas == True; False == 0
     private final int tipo; // 1 -> Normal; 2 -> Oculto; 3 -> Privado
 
+
+    /****************CONSTRUTORES****************/
     public Setor(int[] portas) {
         Random aleat = new Random();
 
         this.jogadores = new Jogador[2];
 
-        int qtd = aleat.nextInt(3) + 1;
-        inimigos = new ArrayList<Inimigo>(qtd);
+        int qtd = aleat.nextInt(3) + 1; //Quantidade de inimigos criadas em cada setor eh aleatoria
+        inimigos = new ArrayList<Inimigo>(qtd); //USO DE COLECOES
         // Inicializa todos os inimigos do setor
         for(int i = 0; i < qtd; i++) {
             int num = aleat.nextInt(3) + 1;
             inimigos.add(new Inimigo(num, num, true));
         }
 
-        // Tudo inicia falso
+        // Tudo inicia como falso
         this.ehIncial = false;
         this.ehFinal = false;
         this.p1Esta = false;
         this.p2Esta = false;
 
-        
+        //Define as portas de cada setor(essencial para a impressao)
         if(portas[0] == 1)
             this.UP = true;
         else
@@ -45,8 +47,8 @@ public class Setor {
         else
             this.RIGHT = false;
 
-        // define tipo do setor
-        this.tipo = aleat.nextInt(1, 4);
+        //Define o tipo do setor
+        this.tipo = aleat.nextInt(3) + 1;
     }
 
     public Setor(boolean ehInicial){    
@@ -69,7 +71,7 @@ public class Setor {
         Random aleat = new Random();
 
         // define tipo do setor
-        this.tipo = aleat.nextInt(1, 4);
+        this.tipo = aleat.nextInt(3) + 1;
     }
 
     /********* GET/SET **********/
@@ -138,4 +140,11 @@ public class Setor {
 
         return qtd;
     }
+
+    public void destruirInimigos(){
+        for(Inimigo i : this.getInimigos())
+            if(i.getVivo() == true)
+                i.setVivo(false);
+    }
+
 }

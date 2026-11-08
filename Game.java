@@ -1,47 +1,22 @@
-/*
-Eu pensei assim: jogadorSup -> jogadorSimples -> Entidade e Inimigos -> Entidade
-ou seja jogadorsup implementa jogadorsimples que implementa entidade
-a maior dificuldade imagino q seja mexer na main e o tabuleiro.
-cada "elemento" da matriz, ou seja, cada (x, y) precisa ter uma quantidade de portas, com limitaçoes caso sejam bordas,
-definidas em tempo de compilação se nn me engano, uma qntd de inimigos, que pelo q entendi, coleções vao ser tipos abstratos de dados,
-como listas e tals, ent daria pra fazer uma lista de inimigos para cada (x, y), o tamanho eh randomico, e ai teria q manipular isso td, 
-por exemplo, jogadorsimples ataca, ent teria q pegar o (x,y) do jogadorsimples e retirar a quantidade de atk dele da defesa do inimigo0, o 
-primeiro da lista, caso morra a lista deve andar pro proximo, eh meio chato, mas nn ax q seja mt dificil, coloquei as minhas ideias em cada arquivo
-
-parte 2: tava implementando as coisas enquanto via os slides e percebi q confundi abstrata com interface, abstrata tbm nn pode ser declarada na main
-e eu tava usando jogSimples como abstrata, mas se nn pode ser declarada na main ent nn faz o menor sentido jogSimples ser abstrata, ela deve ser concreta
-contudo, eu nn sei onde eu colocaria a classe abstrata para preencher os requisitos do trabalho, q fala q deve ter interface e abstrata, interface eh a 
-Entidade.java, pode ser abstrata, mas ai fica faltando o outro, talvez precise de mais uma classe alem das q eu pensava
-
-parte 2.2: talvez entidade precise ser abstrata, assim ela ficaria com os atributos q inimigo e jogSImples teriam em comum e poderiamos fazer dois metodos
-de atacar fazendo uma sobrecarga nele, um ataca o oponente o outro o player, nn preciso explicar em q situaçoes a gente usaria isso
-
-parte 2.3: pensei numa ideia, fazer assim JogadorSup -> Jogador, JogadorSimples -> Jogador, Jogador -> Entidade, Inimigo -> Entidade (se nn entenderam
-desenhem num papel pq fica confuso msm), assim entidade seria interface, nn pode ser chamado na main blz, e jogador uma classe abstrata, tbm nn pode
-ser chamado, e entidade teria o metodo atacar, comum a todos, jogador teria os metodos movimentar e atacar definidos. Pensando melhor, ainda teria um
-problema pois entidade precisa ter tres metodos atacar, um atacar(jogsimples p1), atacar(jogsuporte p2), atacar(inimigo op), pq? pq tem diferença entre um
-inimigo e um jogsimples etc, o problema: se entidade eh interface ent jogsimples vai precisar implementar o atacar(jogsimples p1), oq nn faz sentido
-ele causar dano a si msm, mas a gente pode simplesmente nn definir  a funcao, tipo atacar(jogsimples p1){}; coisa assim, pois a gente nunca vai chamar
-p1.atacar(p1), nn faz sentido isso.
-
-parte 2.4: fiz umas alterações, criei a classe abstrata Jogador, e simples e suporte puxam dela, ela tem td definido, oq condiz com abstrato, inimigo puxa
-de entidade diretamente, oq falta(alem de mt coisa) eh imprimir o tabuleiro e definir como fazer os inimigos, alem de colocar o conceito de polimorfismo aq
-q eu nn sei bem como encaixar ainda.
-
-parte 2.5: finalizando, coloquei a parte basica por ora no trabalho, a gente precisa definir como vao ser os inimigos e descobrir como imprimir o tabuleiro
-da forma q ela mostrou no pdf, eu ax q base ta certa, tipo atk restaurar e tals, so precisa criar a logica na main para tudo isso acontecer
-
-*/
-
 // import java.util.Random;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Game {
-    public Tabuleiro tab;
-    public JogadorSimples p1;
-    public JogadorSuporte p2;
-    public int ciclos;
-    public String state;
+    private Tabuleiro tab;
+    private Jogador p1, p2;
+    private LinkedList<String> fila;
+    private int ciclos;
+    private String state;
+    private boolean ATK, MOV, PROC;
+
+    /****************CONSTRUTORES****************/
+    public Game(){}
+    public Game(boolean negacao){
+        this.setATK(negacao);
+        this.setMOV(negacao);
+        this.setPROC(negacao);
+    }
     /* A ideia é mudar o game.play() para um switch de game.state em que ele controlará o fluxo total do começo, turnos e fim. 
     os turnos poderiam estar em uma lista circular com ordem TURNOP1 -> TURNOP1 -> TURNOP2 -> TURNOP2 -> TURNOINIMIGOS -> TURNOP1...
     Assim a cada ação a fila andaria e passaria o valor para game.state.
@@ -50,142 +25,148 @@ public class Game {
     Caso ciclo max -> game.state -> Fim 
     arraydeque -> classe fodona dar uma olhada
     */
-    public void init() {
-        // Random aleat = new Random();
-        tab = new Tabuleiro();
-        p1 = new JogadorSimples();//ver comentario no jogadorsimples.java
-        p2 = new JogadorSuporte(); 
-        this.ciclos = 0;
-        
-        tab.setJogador(p1);
-        tab.setJogador(p2);
+
+    /****************METODOS GET E SET****************/
+
+    public void setCiclos(int ciclos) {
+        if(ciclos > 0)
+            this.ciclos = ciclos;
+    }
+    public int getCiclos() {
+        return this.ciclos;
+    }
+    public void setState(String state) {
+        this.state = state;
+    }
+    public String getState() {
+        return this.state;
+    }
+    public void setTab(Tabuleiro tab) {
+        this.tab = tab;
+    }
+    public Tabuleiro getTab() {
+        return this.tab;
+    }
+    public void setATK(boolean atk) {
+        ATK = atk;
+    }
+    public boolean getAtk(){
+            return this.ATK;
+    }
+    public void setMOV(boolean mv) {
+        MOV = mv;
+    }
+    public boolean getMov(){
+            return this.MOV;
+    }
+    public void setPROC(boolean pro) {
+        PROC = pro;
+    }
+    public boolean getProc(){
+            return this.PROC;
+    }
+    public void setP1(Jogador p1) {
+        this.p1 = p1;
+    }
+    public Jogador getP1() {
+        return p1;
+    }
+    public void setP2(Jogador p2) {
+        this.p2 = p2;
+    }
+    public Jogador getP2() {
+        return p2;
+    }
+    public void setFila(LinkedList<String> fila) {
+        this.fila = fila;
+    }
+    public LinkedList<String> getFila() {
+        return fila;
     }
 
+    /****************OUTROS METODOS****************/
+
+    //Fixo na fila de eventos os eventos que vao ocorrer em loop
+    public void adicionarFila(){
+        LinkedList<String> temp = this.getFila();
+        temp.addLast("AcaoP1");
+        temp.addLast("AcaoP1");
+        temp.addLast("AcaoP2");
+        temp.addLast("AcaoP2");
+        temp.addLast("AcaoOponentes");
+        this.setFila(temp);
+    }
+    
+    //Inicializo o jogo
+    public void init() {
+        this.setTab(new Tabuleiro());
+        this.setP1(new JogadorSimples()); //USO DE POLIMORFISMO COERCAO UPCAST
+        this.setP2(new JogadorSuporte()); //USO DE POLIMORFISMO COERCAO UPCAST
+        this.setCiclos(0);
+        this.getTab().setJogador(p1);
+        this.getTab().setJogador(p2);
+    }
+
+    //Loop principal, onde o jogo ocorre realmente
     public void play() {
-        Scanner scanner = new Scanner(System.in);
-
         int vencedor = 0;
+        int cont = 0;
+        boolean valido = false;
 
+        Scanner scanner = new Scanner(System.in);
+        this.setFila(new LinkedList<>());
+        this.adicionarFila();
+
+        Tabuleiro.limparTela();
         tab.imprimeTabuleiro();
-        while (ciclos < 25 && (p1.getDef() > 0 || p2.getDef() > 0)){
-	        tab.limparTela();
-            tab.imprimeTabuleiro(); 
-
-            if (p1.getDef() > 0)
-                if (p1.turno(scanner, tab, p1)) {
-                    vencedor = 1;
+        //ta indo ate 125 pq eu conto cont a cada jogada ent como cada turno sao 5 jogadas, 125
+        while (this.getCiclos() < 125 && (p1.getDef() > 0 || p2.getDef() > 0) && vencedor == 0){ //Verifico as condicoes de derrota e vitoria
+            this.setState(this.getFila().removeFirst()); //Removo o primeiro evento, mas salvo ele num atributo da classe
+            switch (this.getState()) {
+                case "AcaoP1":
+                    while(this.getP1().isVivo() == true && valido == false){ //A flag de valido eh para saber se o usuario nn fez uma acao impossivel no setor
+                        this.getP1().opcoes(scanner, this.getTab(), this); //Imprime as opcoes que o P1 pode fazer num geral, ate mesmo as que ele ta impossibilitado no momento
+                        valido = this.getP1().turnoP1(scanner, tab, this, this.getState(), this.getP1()); //Ocorre a acao
+                        cont = this.getCiclos() + 1;
+                    }
                     break;
-                }
-
-            if (p2.getDef() > 0)
-                if (p2.turno(scanner, tab, p1)){
-                    vencedor = 2;
+                case "AcaoP2": //Mesma coisa que para P1
+                    while(this.getP2().isVivo() == true && valido == false){
+                        if(p2 instanceof JogadorSuporte){
+                            JogadorSuporte temp = (JogadorSuporte) p2; //USO DE POLIMORFISMO COERCAO DOWNCAST
+                            temp.opcoes(scanner, tab, p1, this); //As opcoes de P2 sao diferentes devido ao recuperarDef
+                        }
+                        valido = this.getP2().turnoP1(scanner, tab, this, this.getState(), this.getP1());
+                        cont = this.getCiclos() + 1;
+                    }
                     break;
-                }
-
-            if (p1.getX() != p2.getX() || p1.getY() != p2.getY()){
-                Setor set1 = tab.getSetor(p1.getX(), p1.getY());
-                Setor set2 = tab.getSetor(p2.getX(), p2.getY());
-
-                for (int i = 0; i < set1.getInimigos().size(); i++){
-                    Inimigo op = set1.getInimigos().get(i);
-
-                    if (op.isVivo() && p1.isVivo()) op.atacar(p1);
-                }
-
-                for (int i = 0; i < set2.getInimigos().size() ; i++){
-                    Inimigo op = set2.getInimigos().get(i);
-
-                    if (op.isVivo() && p2.isVivo()) op.atacar(p2);
-                }
+                case "AcaoOponentes": //Mesma situacao dos jogadores
+                    Inimigo op = new Inimigo();
+                    op.ataqueInimigo(tab, p1, p2);
+                    Tabuleiro.limparTela();
+                    this.getTab().imprimeTabuleiro();
+                    cont = this.getCiclos() + 1;
+                    break;
             }
-            else {
-                Setor set = tab.getSetor(p1.getX(), p1.getY());
+            this.setCiclos(cont);
 
-                for (int i = 0; i < set.getInimigos().size(); i++){
-                    Inimigo op = set.getInimigos().get(i);
-                    if (op.isVivo() && p1.isVivo()) op.atacar(p1);
-                    if (op.isVivo() && p2.isVivo()) op.atacar(p2);
-                }
-            }
+            if(this.getTab().getSetor(this.getP1().getX(), this.getP1().getY()).getEhFinal() == true) //Verifica se P1 venceu
+                vencedor = 1;
+            else if(this.getTab().getSetor(this.getP2().getX(), this.getP2().getY()).getEhFinal() == true) //Verifica se P2 venceu
+                vencedor = 2;
 
-            this.ciclos++;
+            fila.addLast(this.getState()); //Recoloca o evento retirado novamente na fila, mas agr esta na ultima posicao
+            valido = false; //Recoloca a flag com o valor certo, para nn ficar com "lixo" de memoria
         }
 
-        System.out.println("Fim de jogo!\n");
-        
-        if (!p1.isVivo() && !p2.isVivo()){
-            tab.limparTela();
-            tab.imprimeTabuleiro(); 
+        if(vencedor > 0){
+            System.out.printf("Parabéns! O jogador P%d erradicou a ameaça com sucesso!\n", vencedor);
+        }else if(this.getCiclos() >= 125){
+            System.out.println("O limite de ciclos foi atingido...");
+        }else if(this.getP1().isVivo() == false && this.getP2().isVivo() == false){
             System.out.println("Vocês foram destruídos pelos vírus...");
         }
-        else if (ciclos >= 25)
-            System.out.println("O limite de ciclos foi atingido...");
-        else
-            System.out.printf("Parabéns! O jogador P%d erradicou a ameaça com sucesso!\n", vencedor);
 
-        scanner.close();
-        
-        /*
-        inicializar players
-        while(turnos != 25, alcancado == 0, mortos == 0){
-            acaop1
-            acaop1
-            acaop2
-            acaop2
-            inimigos
-        }
-        cada jogador joga 2 vzs, ou seja eh p1, p1, p2, p2, e ai os inimigos de CADA setor(p1 e p2 podem estar em setores diferentes)
-
-        imprimir tabuleiro
-        enquanto turnos != 25, nao chegou no objetivo e os players nn estao mortos{
-            determinar quem esta jogando agr (variaveis do tipo bool e um contador talvez)
-            se utilizar um contador, tipo q some ate 4 e resete no 4, precisa verificar qual eh o numero do contador aq
-            #######################acao do p1#######################
-            receber input
-                caso seja um movimento
-                    verificar se tem inimigos vivos no setor do player que esta jogando
-                        caso nn tenha 
-                            chamar movimento do jogador 
-                        caso tenha
-                            impedir movimento e sair daq para poder ler o input dnv
-                caso seja um ataque
-                    verificar se tem inimigos vivos no setor do player que esta jogando
-                        caso nn tenha 
-                            impedir ataque e sair daq para poder ler o input dnv
-                        caso tenha
-                            verificar o tipo do setor
-                                caso seja oculto
-                                    calcular uma "probabilidade" de acerto(talvez isso deva ser um novo metodo para ficar melhor)
-                                caso nn seja
-                                    atacar o primeiro inimigo (quando imprime o setor, tem alguma verificacao se os inimigos estao vivos?)
-                                    (ou melhor, a gente atualiza os inimigos em algum ponto?)
-                caso seja uma procura 
-                    verificar o tipo do setor
-                        caso seja privado
-                            impedir procura e sair daq para poder ler o input dnv
-                        caso nn seja 
-                            realizar a procura
-
-            #######################acao do p2#######################
-            msm coisa q acima, so q agr pro p2(julgo q eh preciso fazer isso pq quando a gente vai chamar um metodo no codigo acima a gente fala
-            p1.movimento, ent precisa ter p2.movimento no codigo abaixo, da para colocar em metodos que fica melhor, mas por ora coloca aq msm e 
-            dps a gente altera pra deixar mais bunito)
-            
-            #######################acao dos inimigos#######################
-                verificar se tem inimigos vivos no setor do p1
-                    caso tenha
-                        atacar p1
-                    caso nn tenha
-                        nd acontece
-                verificar se tem inimigos vivos no setor do p2
-                    caso tenha
-                        atacar p2
-                    caso nn tenha
-                        nd acontece
-
-        }
-        */
     }
 
     public void end() {

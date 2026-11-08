@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public class JogadorSuporte extends Jogador{
     // Construtor padrao
@@ -10,7 +11,7 @@ public class JogadorSuporte extends Jogador{
 
     // Adiciona 2 pontos de def ao jogador simples
     // caso ele esteja no mesmo setor
-    public void restaurar(JogadorSimples p1){
+    public void restaurar(Jogador p1){
             if (this.X == p1.getX() && this.Y == p1.getY())
                 p1.setDef(p1.getDef() + 2);
     }
@@ -26,7 +27,7 @@ public class JogadorSuporte extends Jogador{
     }
 
     @Override
-    public void imprimirAcoesExtras(JogadorSimples p1){
+    public void imprimirAcoesExtras(Jogador p1){
         System.out.print("Restaurar: [R2] Restaurar P2");
 
         if (p1.getX() == this.getX() && p1.getY() == this.getY())
@@ -36,8 +37,8 @@ public class JogadorSuporte extends Jogador{
     }
 
     @Override
-    public boolean acoesExtras(JogadorSimples p1, String op, Tabuleiro tab){
-        tab.limparTela();
+    public boolean acoesExtras(Jogador p1, String op, Tabuleiro tab){
+        Tabuleiro.limparTela();
         if (op.length() == 2 && op.charAt(0) == 'R'){
             if (op.charAt(1) == '1'){
                 if (p1.getX() == this.getX() && p1.getY() == this.getY() && p1.isVivo()){
@@ -55,5 +56,10 @@ public class JogadorSuporte extends Jogador{
             return false;
         }
         return false;
+    }
+
+    public void opcoes(Scanner input, Tabuleiro tab, Jogador p1, Game g){
+        super.opcoes(input, tab, g);
+        this.imprimirAcoesExtras(p1);
     }
 }

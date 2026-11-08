@@ -97,12 +97,13 @@ public abstract class Jogador implements Entidade {
         }
     }
 
-    public void atacar(Jogador p){};
+    public void causarDano(Jogador p){};
 
     // Recebe o setor atual do jogador **Acho que o ideal seria receber apenas os inimigos
-    public void procurar(Setor setor){
+    public void procurar(Setor setor, Tabuleiro tab){
         Random random = new Random();
         int num = random.nextInt(6)+1;
+        Tabuleiro.limparTela();
         switch (num) {
             case 4:
                 this.def++;
@@ -130,179 +131,163 @@ public abstract class Jogador implements Entidade {
         return true;
     }
 
-    protected void imprimirAcoesExtras(JogadorSimples p1){};
+    protected void imprimirAcoesExtras(Jogador p1){};
 
-    protected boolean acoesExtras(JogadorSimples p1, String op, Tabuleiro tab){
+    protected boolean acoesExtras(Jogador p1, String op, Tabuleiro tab){
         return false;
     };
 
-    public void acaoMovimentar(Scanner scanner, Tabuleiro tab){
-        //Setor set = tab.getSetor(this.X, this.Y);
-
-        while (true){
-            System.out.println("Movimento: [W] Cima | [A] Esquerda | [S] Baixo | [D] Direita | [F] Ficar");
-
-            switch (scanner.nextLine().toUpperCase()){
+    public boolean acaoMovimentar(String acao, Tabuleiro tab){
+            switch (acao){ //TODO: tem um bug q eh quando vc movimenta pra baixo na borda de baixo, ver como resolver isso dps
                 case "W":
                     this.movimentar(tab, "UP");
-                    return;
+                    return true;
                 case "A":
                     this.movimentar(tab, "LEFT");
-                    return;
+                    return true;
                 case "S":
                     this.movimentar(tab, "DOWN");
-                    return;
+                    return true;
                 case "D":
                     this.movimentar(tab, "RIGHT");
-                    return;
-                case "F":
-                    return;
+                    return true;
                 default:
-                    System.out.println("Opção não existente\n");
-                    continue;
+                    return false;
             }
-        }
     }
 
-    public boolean turno(Scanner scanner, Tabuleiro tab, JogadorSimples p1){
+    public void opcoes(Scanner input, Tabuleiro tab, Game g){
+        this.texto();
+        System.out.println("Movimento: [W] Cima | [A] Esquerda | [S] Baixo | [D] Direita");
+        Setor atu = tab.getSetor(this.X, this.Y);
+        if(atu.qtdInimigosVivos() > 0){ 
+            System.out.print("Atacar: ");
+            for(int i = 1; i <= atu.getInimigos().size() ; i++)
+                if (atu.getInimigos().get(i-1).isVivo()) System.out.printf("[A" + i + "] Atacar Inimigo %d | ", i);
+            System.out.println();
+        }
+        System.out.println("Procurar: [P]");
+
+    }
+
+    //TODO: modularizar a parte do atk, deixa com o pai(vitor)
+    public boolean turnoP1(Scanner scanner, Tabuleiro tab, Game g, String state, Jogador p1){
+        Setor atu = tab.getSetor(this.X, this.Y);
+        if(atu.getEhFinal() == true)
+            return(true);
+
         Random aleat = new Random();
-        int acoes = 2;
+        boolean acaoFeita = false;
 
-        Setor set = tab.getSetor(this.X, this.Y);
+        //isso aq eh meio feio, talvez um metodo em game chamado setarflags, algo assim
+        if(atu.qtdInimigosVivos() == 0)
+            g.setMOV(true);
+        else
+            g.setMOV(false);
+        if(atu.qtdInimigosVivos() > 0)
+            g.setATK(true);
+        else
+            g.setATK(false);
+        if(atu.getTipoSetor() != 3)
+            g.setPROC(true);
+        else
+            g.setPROC(false);
 
-
-        while (acoes > 0){
-            boolean ATK = false, PROC = false, MOV = false;
-            MOV = set.qtdInimigosVivos() == 0;
-
-            if(MOV){
-                this.texto();
-                this.acaoMovimentar(scanner, tab);
-                acoes--;
-		tab.limparTela();
-                tab.imprimeTabuleiro();
-                if(acoes == 0)
-                    break;
-
-                set = tab.getSetor(this.X, this.Y);
-                if (set.getEhFinal())
-                    return true;
-            }
-            set = tab.getSetor(this.X, this.Y);
-            ATK = set.qtdInimigosVivos() > 0;
-            PROC = set.getTipoSetor() != 3;
-
-            if (!this.haAcao(set))
-                break;
-
-            this.texto();
-
-            if (ATK){
-                System.out.print("Atacar: ");
-
-                for(int i = 1; i <= set.getInimigos().size() ; i++)
-                    if (set.getInimigos().get(i-1).isVivo()) System.out.printf("[A" + i + "] Atacar Inimigo %d | ", i);
-                
-                System.out.println();
-            }
-
-
-            if (PROC)
-                System.out.println("Procurar: [P]");
-
-            this.imprimirAcoesExtras(p1);
-
-            String op = scanner.nextLine().toUpperCase();
-
+        String op = scanner.nextLine().toUpperCase();
+        if(g.getMov() == true){
+            Tabuleiro.limparTela();
+            acaoFeita = this.acaoMovimentar(op, tab);
+        }
+        if(acaoFeita == false && g.getAtk() == true){ 
             if (op.length() == 2 && op.charAt(0) == 'A'){
-		tab.limparTela();
+                
                 if (op.charAt(1) == '1'){
-                    if (set.getInimigos().size() == 0 || !set.getInimigos().get(0).isVivo()){
+                    acaoFeita = true;
+                    Tabuleiro.limparTela(); //TODO: as impressoes as vzs aparecem as vzs nn ver isso dps
+                    if (atu.getInimigos().size() == 0 || !atu.getInimigos().get(0).isVivo()){
                         System.out.println("Não há inimigos.");
-                        continue;
                     }
-                    if (set.getTipoSetor() == 2){
+                    if (atu.getTipoSetor() == 2){
                         if (aleat.nextInt(2) == 0) {
                             System.out.println("Ataque bem sucedido!");
-                            this.atacar(set.getInimigos().get(0));
+                            this.atacar(atu.getInimigos().get(0));
                         }
                         else
                             System.out.println("Ataque falhou.");
                     }
                     else {
                         System.out.println("Ataque bem sucedido!");
-                        this.atacar(set.getInimigos().get(0));
+                        this.atacar(atu.getInimigos().get(0));
                     }
                 }
                 else if (op.charAt(1) == '2'){
-		    tab.limparTela();
-                    if (set.getInimigos().size() < 2 || !set.getInimigos().get(1).isVivo()){
+                    acaoFeita = true;
+                    Tabuleiro.limparTela();
+                    if (atu.getInimigos().size() < 2 || !atu.getInimigos().get(1).isVivo()){
                         System.out.println("Não há inimigos.");
-                        continue;
                     }
-                    if (set.getTipoSetor() == 2){
+                    if (atu.getTipoSetor() == 2){
                         if (aleat.nextInt(2) == 0) {
                             System.out.println("Ataque bem sucedido!");
-                            this.atacar(set.getInimigos().get(1));
+                            this.atacar(atu.getInimigos().get(1));
                         }
                         else
                             System.out.println("Ataque falhou.");
                     }
                     else {
                         System.out.println("Ataque bem sucedido!");
-                        this.atacar(set.getInimigos().get(1));
+                        this.atacar(atu.getInimigos().get(1));
                     }
                 }
                 else if (op.charAt(1) == '3'){
-		    tab.limparTela();	
-                    if (set.getInimigos().size() < 3 || !set.getInimigos().get(2).isVivo()){
+                    acaoFeita = true;
+                    Tabuleiro.limparTela();
+                    if (atu.getInimigos().size() < 3 || !atu.getInimigos().get(2).isVivo()){
                         System.out.println("Não há inimigos.");
-                        continue;
                     }
-                    if (set.getTipoSetor() == 2){
+                    if (atu.getTipoSetor() == 2){
                         if (aleat.nextInt(2) == 0) {
                             System.out.println("Ataque bem sucedido!");
-                            this.atacar(set.getInimigos().get(2));
+                            this.atacar(atu.getInimigos().get(2));
                         }
                         else
                             System.out.println("Ataque falhou.");
                     }
                     else {
                         System.out.println("Ataque bem sucedido!");
-                        this.atacar(set.getInimigos().get(2));
+                        this.atacar(atu.getInimigos().get(2));
                     }
                 }
                 else{
                     System.out.println("Inimigo não existente.");
-                    continue;
                 }
             }
-            else if (op.length() == 1 && op.charAt(0) == 'P'){
-		tab.limparTela();
-                if (!PROC){
-                    System.out.println("Procurar não permitido.");
-                    continue;
-                }else
-                    this.procurar(set);                
+        }
+        
+        if (op.length() == 1 && op.charAt(0) == 'P'){
+            if (g.getProc() == true){
+                this.procurar(atu, tab);
+                acaoFeita = true;  
             }
-            else if(!this.acoesExtras(p1, op, tab)){
-		tab.limparTela();
-                System.out.println("Ação não existente.");
-                continue;
-            }
-
-            for(int i = 0; i < set.getInimigos().size(); i++) {
-                if(!set.getInimigos().get(i).isVivo()) {
-                    set.getInimigos().remove(i);
-                }
-            }
-
-            tab.imprimeTabuleiro();
-
-            acoes--;
+        }
+        
+        if(acaoFeita == false && state == "AcaoP2"){
+            acaoFeita = this.acoesExtras(p1, op, tab);
         }
 
-        return false;
+        for(int i = 0; i < atu.getInimigos().size(); i++) {
+            if(!atu.getInimigos().get(i).isVivo()) {
+                atu.getInimigos().remove(i);
+            }
+        }
+        tab.imprimeTabuleiro();
+        if(acaoFeita == false){
+            if(g.getProc() == false && op.charAt(0) == 'P')
+                System.out.println("*************Procurar não permitido.*************");
+            else
+                System.out.println("*************Acao invalida*************");
+        }
+        return acaoFeita;
     }
 
     public void dano(int dano){
