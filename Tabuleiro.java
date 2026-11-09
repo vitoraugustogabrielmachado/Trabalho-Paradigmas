@@ -8,10 +8,11 @@ import java.util.Random;
 // TODO: tirar o p1 do tabuleiro quando ele morrer
 
 public class Tabuleiro {
-    private String titulo = "Antivírus por um dia"; // Podemos colocar isso no construtor para receber por parâmetro
+    private final String titulo = "Antivírus por um dia"; 
     private final Setor[][] setores;
     private int[] portas;
     
+    /****************CONSTRUTORES****************/
     public Tabuleiro() {
         Random aleat = new Random();
         this.portas = new int[4];
@@ -38,12 +39,8 @@ public class Tabuleiro {
 
         this.setores[xFinal][yFinal].setFinal();
     }
-    public Tabuleiro(String titulo) {
-        this();
-        this.titulo = titulo;
-    }
-    /************* GET / SET ***********/
 
+    /****************METODOS GET E SET****************/
     // Retorna o setor (x, y)
     public Setor getSetor(int x, int y) {
         return this.setores[x][y];
@@ -121,7 +118,7 @@ public class Tabuleiro {
     // Indica que p está no setor (x, y)
     public void setJogador(Jogador p) {
         if (p instanceof JogadorSimples)
-            this.setores[p.getX()][p.getY()].setJogador((JogadorSimples) p);
+            this.setores[p.getX()][p.getY()].setJogador((JogadorSimples) p); //TODO: USO DO POLIMORFISMO DOWNCAST
         if (p instanceof JogadorSuporte)
             this.setores[p.getX()][p.getY()].setJogador((JogadorSuporte) p);
     }

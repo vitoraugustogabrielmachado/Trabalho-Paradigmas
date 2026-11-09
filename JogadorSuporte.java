@@ -8,6 +8,12 @@ public class JogadorSuporte extends Jogador{
             this.def = 7;
             this.vivo = true;
     }
+    public JogadorSuporte(Estatistica est){
+            super(2, 2, est);
+            this.atk = 1;
+            this.def = 7;
+            this.vivo = true;
+    }
 
     // Adiciona 2 pontos de def ao jogador simples
     // caso ele esteja no mesmo setor
@@ -44,6 +50,7 @@ public class JogadorSuporte extends Jogador{
                 if (p1.getX() == this.getX() && p1.getY() == this.getY() && p1.isVivo()){
                     System.out.println("DEF de P1 aumentada em 2!");
                     this.restaurar(p1);
+                    this.est.mudarCura(this);
                     return true;
                 }
                 return false;
@@ -51,6 +58,7 @@ public class JogadorSuporte extends Jogador{
             if (op.charAt(1) == '2'){
                 System.out.println("DEF de P2 aumentada em 2!");
                 this.restaurar();
+                this.est.mudarCura(this);
                 return true;
             }
             return false;

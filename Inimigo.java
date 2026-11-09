@@ -56,14 +56,22 @@ public class Inimigo implements Entidade{
         return this.vivo;
     }
 
-    public void atacar(Inimigo oponente){};
+    public void causarDano(Inimigo oponente){};
 
     // Ataca o jogador p caso num seja par
     public void causarDano(Jogador p){
         Random random = new Random();
         int num = random.nextInt(6)+1;
-        if (num % 2 == 0) 
+        if (num % 2 == 0){
+            p.est.mudarDanoRecebido(p, this);
             p.dano(this.atk);
+            if(p instanceof JogadorSimples)
+                System.out.printf("Inimigo causou " + this.atk + " no Player1");
+            else
+                System.out.printf("Inimigo causou " + this.atk + " no Player2");
+        }else{
+            System.out.printf("Inimigo errou ataque");
+        }
     }
 
     //Funcao que causa(possivelmente) danos aos player, eh uma chance de causar dano

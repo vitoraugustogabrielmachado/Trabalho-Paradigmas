@@ -12,11 +12,6 @@ public class Game {
 
     /****************CONSTRUTORES****************/
     public Game(){}
-    public Game(boolean negacao){
-        this.setATK(negacao);
-        this.setMOV(negacao);
-        this.setPROC(negacao);
-    }
     /* A ideia é mudar o game.play() para um switch de game.state em que ele controlará o fluxo total do começo, turnos e fim. 
     os turnos poderiam estar em uma lista circular com ordem TURNOP1 -> TURNOP1 -> TURNOP2 -> TURNOP2 -> TURNOINIMIGOS -> TURNOP1...
     Assim a cada ação a fila andaria e passaria o valor para game.state.
@@ -100,8 +95,8 @@ public class Game {
     //Inicializo o jogo
     public void init() {
         this.setTab(new Tabuleiro());
-        this.setP1(new JogadorSimples()); //USO DE POLIMORFISMO COERCAO UPCAST
-        this.setP2(new JogadorSuporte()); //USO DE POLIMORFISMO COERCAO UPCAST
+        this.setP1(new JogadorSimples(new Estatistica())); //TODO: USO DE POLIMORFISMO COERCAO UPCAST
+        this.setP2(new JogadorSuporte(new Estatistica())); //TODO: USO DE POLIMORFISMO COERCAO UPCAST
         this.setCiclos(0);
         this.getTab().setJogador(p1);
         this.getTab().setJogador(p2);
@@ -109,7 +104,6 @@ public class Game {
 
     //Loop principal, onde o jogo ocorre realmente
     public void play() {
-        int vencedor = 0;
         int cont = 0;
         boolean valido = false;
 
@@ -120,23 +114,23 @@ public class Game {
         Tabuleiro.limparTela();
         tab.imprimeTabuleiro();
         //ta indo ate 125 pq eu conto cont a cada jogada ent como cada turno sao 5 jogadas, 125
-        while (this.getCiclos() < 125 && (p1.getDef() > 0 || p2.getDef() > 0) && vencedor == 0){ //Verifico as condicoes de derrota e vitoria
+        while (this.getCiclos() < 125 && (p1.getDef() > 0 || p2.getDef() > 0) && this.p1.est.getVencedor() == 0){ //Verifico as condicoes de derrota e vitoria
             this.setState(this.getFila().removeFirst()); //Removo o primeiro evento, mas salvo ele num atributo da classe
             switch (this.getState()) {
                 case "AcaoP1":
                     while(this.getP1().isVivo() == true && valido == false){ //A flag de valido eh para saber se o usuario nn fez uma acao impossivel no setor
                         this.getP1().opcoes(scanner, this.getTab(), this); //Imprime as opcoes que o P1 pode fazer num geral, ate mesmo as que ele ta impossibilitado no momento
-                        valido = this.getP1().turnoP1(scanner, tab, this, this.getState(), this.getP1()); //Ocorre a acao
+                        valido = this.getP1().turno(scanner, tab, this, this.getState(), this.getP1()); //Ocorre a acao
                         cont = this.getCiclos() + 1;
                     }
                     break;
                 case "AcaoP2": //Mesma coisa que para P1
                     while(this.getP2().isVivo() == true && valido == false){
                         if(p2 instanceof JogadorSuporte){
-                            JogadorSuporte temp = (JogadorSuporte) p2; //USO DE POLIMORFISMO COERCAO DOWNCAST
+                            JogadorSuporte temp = (JogadorSuporte) p2; // TODO: USO DE POLIMORFISMO COERCAO DOWNCAST
                             temp.opcoes(scanner, tab, p1, this); //As opcoes de P2 sao diferentes devido ao recuperarDef
                         }
-                        valido = this.getP2().turnoP1(scanner, tab, this, this.getState(), this.getP1());
+                        valido = this.getP2().turno(scanner, tab, this, this.getState(), this.getP1());
                         cont = this.getCiclos() + 1;
                     }
                     break;
@@ -151,30 +145,20 @@ public class Game {
             this.setCiclos(cont);
 
             if(this.getTab().getSetor(this.getP1().getX(), this.getP1().getY()).getEhFinal() == true) //Verifica se P1 venceu
-                vencedor = 1;
+                this.p1.est.setVencedor(1); 
             else if(this.getTab().getSetor(this.getP2().getX(), this.getP2().getY()).getEhFinal() == true) //Verifica se P2 venceu
-                vencedor = 2;
+                this.p1.est.setVencedor(2); 
 
             fila.addLast(this.getState()); //Recoloca o evento retirado novamente na fila, mas agr esta na ultima posicao
             valido = false; //Recoloca a flag com o valor certo, para nn ficar com "lixo" de memoria
         }
 
-        if(vencedor > 0){
-            System.out.printf("Parabéns! O jogador P%d erradicou a ameaça com sucesso!\n", vencedor);
-        }else if(this.getCiclos() >= 125){
-            System.out.println("O limite de ciclos foi atingido...");
-        }else if(this.getP1().isVivo() == false && this.getP2().isVivo() == false){
-            System.out.println("Vocês foram destruídos pelos vírus...");
-        }
-
     }
 
     public void end() {
-        /*
-        verificar se o jogo foi terminado por ter sido concluido ou por outra situaçao
-        aq nn eh c ent nn precisa dar free, oq eu ax q deve ter aq eh um system.out para falar parabens ou falha
-        nn sei se vao querer colocar mais alguma coisa aq
-        */
+        this.p1.est.imprimirTelaFinal(this);
+        this.p1.est.imprimirP1();
+        this.p2.est.imprimirP2(this.p1);
     }
 
 }

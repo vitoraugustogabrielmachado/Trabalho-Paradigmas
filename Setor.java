@@ -16,7 +16,7 @@ public class Setor {
         this.jogadores = new Jogador[2];
 
         int qtd = aleat.nextInt(3) + 1; //Quantidade de inimigos criadas em cada setor eh aleatoria
-        inimigos = new ArrayList<Inimigo>(qtd); //USO DE COLECOES
+        inimigos = new ArrayList<Inimigo>(qtd); //TODO: USO DE COLECOES
         // Inicializa todos os inimigos do setor
         for(int i = 0; i < qtd; i++) {
             int num = aleat.nextInt(3) + 1;
@@ -74,7 +74,7 @@ public class Setor {
         this.tipo = aleat.nextInt(3) + 1;
     }
 
-    /********* GET/SET **********/
+    /****************METODOS GET E SET****************/
     /* Se i == 0 -> Retorna JogadorSimples p1
     // Se i == 1 -> Retorna JogadorSuporte p2*/
     public Jogador getJogador(int i) {
@@ -115,6 +115,8 @@ public class Setor {
     public void setFinal(){
         this.ehFinal = true;
     }
+
+    /****************OUTROS METODOS****************/
     public void unsetJogador(JogadorSimples p1) {
         this.p1Esta = false;
     }
@@ -132,19 +134,13 @@ public class Setor {
         }
     }
     
-    public int qtdInimigosVivos(){
+    public int qtdInimigosVivos(){ 
         int qtd = 0;
         for (int i = 0; i < this.getInimigos().size(); i++)
             if (this.getInimigos().get(i).isVivo())
                 qtd++;
 
         return qtd;
-    }
-
-    public void destruirInimigos(){
-        for(Inimigo i : this.getInimigos())
-            if(i.getVivo() == true)
-                i.setVivo(false);
     }
 
 }
