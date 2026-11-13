@@ -69,7 +69,10 @@ public class Estatistica {
         return vencedor;
     }
 
-    // Altera as estatísticas de mortes dos jogadores P1 e P2
+    /*
+    * Incrementa o número de mortes causadas pelos
+    * jogadores P1 e P2.
+    */
     public void mudarKills(Jogador p){
         if(p instanceof JogadorSimples){
             p.est.setKillsP1(p.est.getKillsP1() + 1);
@@ -78,12 +81,20 @@ public class Estatistica {
         }
     }
 
+    /*
+    * Incrementa a quantidade de cura realizada
+    * pelo jogador suporte P2.
+    */
     public void mudarCura(Jogador p){
         if(p instanceof JogadorSuporte){
             p.est.setQntdCura(p.est.getQntdCura() + 2);
         }
     }
 
+    /*
+    * Incrementa a quantidade de dano recebido
+    * pelos jogadores P1 e P2.
+    */
     public void mudarDanoRecebido(Jogador p, Inimigo o){
         if(p instanceof JogadorSimples){
             p.est.setQntdDanoRecebidoP1(p.est.getQntdDanoRecebidoP1() + o.getAtk());
@@ -92,6 +103,10 @@ public class Estatistica {
         }
     }
 
+    /*
+    * Imprime frase de vitória, derrota ou de limite de ciclos atingido
+    * com base nos atributos de Game.
+    */
     public void imprimirTelaFinal(Game g){
         if(this.vencedor > 0){
             System.out.printf("Parabéns! O jogador P%d erradicou a ameaça com sucesso!\n", this.vencedor);
@@ -102,6 +117,9 @@ public class Estatistica {
         }
     }
 
+    /*
+    * Imprime estatísticas de jogo do jogador P1.
+    */
     public void imprimirP1(){
         System.out.println();
         System.out.println("********************ESTATISTICAS DE FIM DE JOGO********************");
@@ -110,6 +128,9 @@ public class Estatistica {
         
     }
 
+    /*
+    * Imprime estatísticas de jogo do jogador P2.
+    */
     public void imprimirP2(Jogador p){
         System.out.println("Quantidade de inimigos mortos por P2: " + this.killsP2);
         System.out.println("Quantidade de dano recebido por P2: " + this.qntdDanoRecebidoP2);
