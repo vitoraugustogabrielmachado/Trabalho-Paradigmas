@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class JogadorSuporte extends Jogador{
+    //---------CONTSRUTORES----------
     // Construtor padrao
     public JogadorSuporte(){
             super(2, 2);
@@ -15,18 +16,30 @@ public class JogadorSuporte extends Jogador{
             this.vivo = true;
     }
 
-    // Adiciona 2 pontos de def ao jogador simples
-    // caso ele esteja no mesmo setor
+    //-------MÉTODOS--------
+
+    /* 
+    * Efetua a ação recuperar defesa:
+    * Adiciona 2 pontos de def ao jogador simples
+    * caso ele esteja no mesmo setor.
+    */
     public void restaurar(Jogador p1){
             if (this.X == p1.getX() && this.Y == p1.getY())
                 p1.setDef(p1.getDef() + 2);
     }
 
-    // Adiciona 2 pontos de def ao jogador de suporte
+    /*
+    * Efetua a ação recuperar defesa:
+    * Adiciona 2 pontos de def ao jogador suporte.
+    */
     public void restaurar(){
         this.def += 2;
     }
 
+    /*
+    * Métodos sobrescritos, pois
+    * o jogador suporte possui ações extras disponíveis.
+    */
     @Override
     public void texto(){
         System.out.println("Ação P2: ");
@@ -66,6 +79,10 @@ public class JogadorSuporte extends Jogador{
         return false;
     }
 
+    /*
+    * Imprime as opções disponíveis para
+    * o jogador suporte P2.
+    */
     public void opcoes(Scanner input, Tabuleiro tab, Jogador p1, Game g){
         super.opcoes(input, tab, g);
         this.imprimirAcoesExtras(p1);
