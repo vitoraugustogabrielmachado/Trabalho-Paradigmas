@@ -310,7 +310,7 @@ public abstract class Jogador implements Entidade {
     }
 
     /*
-    * Configura as flags movimentoLiberado, atk e procura
+    * Configura as flags/atributos MOV, ATK E PROC
     * da classe Game.
     */
     public void setarFlags(Setor atu, Game g){
