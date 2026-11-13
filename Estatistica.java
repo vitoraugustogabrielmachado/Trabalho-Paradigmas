@@ -1,3 +1,4 @@
+// Classe responsável por imprimir as estatísticas do jogo
 public class Estatistica {
     private int killsP1, killsP2, procurasCerta, procurasTotal, qntdCura, qntdDanoRecebidoP1, qntdDanoRecebidoP2, vencedor;
     public Estatistica(){}
@@ -68,6 +69,7 @@ public class Estatistica {
         return vencedor;
     }
 
+    // Altera as estatísticas de mortes dos jogadores P1 e P2
     public void mudarKills(Jogador p){
         if(p instanceof JogadorSimples){
             p.est.setKillsP1(p.est.getKillsP1() + 1);
