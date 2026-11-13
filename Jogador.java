@@ -2,10 +2,10 @@ import java.util.Random;
 import java.util.Scanner;
 
 public abstract class Jogador implements Entidade {
-    // Atributos
+    // ATRIBUTOS
     protected int atk, def, X, Y;
     protected boolean vivo;
-    protected Estatistica est;
+    protected Estatistica est; // Atributo com as estatísticas do jogador
 
     /****************CONSTRUTORES****************/
     public Jogador(){};
@@ -125,7 +125,13 @@ public abstract class Jogador implements Entidade {
         return acaoFeita;
     }
 
+    /*
+    * O método acaoMovimentar() seta a String de argumento desse método.
+    * Altera as coordenadas do setor atual do jogador
+    * com base na string de argumento.
+    */
     public void movimentar(Tabuleiro tab, String direcao){
+        // Verifica antes se o movimento está liberado.
         if(tab.movimentoLiberado(this.X, this.Y, direcao)){ 
             tab.unsetJogador(this);
 
@@ -154,6 +160,11 @@ public abstract class Jogador implements Entidade {
         }
     }
 
+    /*
+    * Chama o método movimentar() passando a String de direção correspondente
+    * com base na tecla digitada pelo usuário.
+    * Retorna true em sucesso e false caso contrário.
+    */
     public boolean acaoMovimentar(String acao, Tabuleiro tab){
         Tabuleiro.limparTela();
         switch (acao){ //TODO: tem um bug q eh quando vc movimenta pra baixo na borda de baixo, ver como resolver isso dps
@@ -174,7 +185,15 @@ public abstract class Jogador implements Entidade {
         }
     }
 
-    // Recebe o setor atual do jogador e procura nele
+    /*
+    * Recebe o setor atual do jogador e
+    * efetua a ação de procurar nele.
+    * A ação efetivada depende de um número aleatório:
+    * i. Para números entre 1 e 3, nada é encontrado no setor.
+    * ii. Para número igual a 4, o jogador ganha 1 de DEF.
+    * iii. Para número igual a 5, o jogador ganha 2 de DEF.
+    * iv. Para número igual a 6, todos os inimigos do setor perdem 1 de DEF.
+    */
     public void acaoProcurar(Setor setor, Tabuleiro tab){
         Random random = new Random();
         int num = random.nextInt(6)+1;
@@ -204,9 +223,14 @@ public abstract class Jogador implements Entidade {
         
     }
 
+    /*
+    * Efetua a ação de atacar um inimigo passado 
+    * como argumento.
+    */
     public boolean acaoAtacar(String op, Setor atu, Random aleat){   
         Tabuleiro.limparTela();
         int i = 0;
+        // Distingue qual dos 3 inimigos foi passado
         char temp = op.charAt(1);
         switch (temp) {
             case '1':
@@ -243,6 +267,10 @@ public abstract class Jogador implements Entidade {
         return true;
     }
 
+    /*
+    * Chama o método dano do inimigo
+    * para recalcular seus atributos após um ataque.
+    */
     public void causarDano(Inimigo op){
         op.dano(this.atk);
         if(op.getVivo() == false)
@@ -259,10 +287,16 @@ public abstract class Jogador implements Entidade {
 
     protected void imprimirAcoesExtras(Jogador p1){}; //nn eh definido como abstrato pois se fosse jogadorSimples deveria implementar isso, mas nn pode
 
+    // Jogador p1 não possui ações extras.
     protected boolean acoesExtras(Jogador p1, String op, Tabuleiro tab){
         return false;
     };
 
+    /*
+    * Atualiza os atributos def e vivo desse jogador.
+    * Caso sua def seja menor ou igual a zero, vivo recebe false
+    * e printa "Jogador <1 ou 2> morto!
+    */
     public void dano(int dano){
         this.def -= dano;
         if (this.def <= 0){
@@ -274,7 +308,11 @@ public abstract class Jogador implements Entidade {
             System.out.println("Jogador " + player + " morto!");
         }
     }
-    
+
+    /*
+    * Configura as flags movimentoLiberado, atk e procura
+    * da classe Game.
+    */
     public void setarFlags(Setor atu, Game g){
         if(atu.qtdInimigosVivos() == 0)
             g.setMOV(true);
