@@ -125,14 +125,17 @@ public class Game {
 
         Tabuleiro.limparTela();
         tab.imprimeTabuleiro();
-        //ta indo ate 125 pq eu conto cont a cada jogada ent como cada turno sao 5 jogadas, 125
-        while (this.getCiclos() < 125 && (p1.getDef() > 0 || p2.getDef() > 0) && this.p1.est.getVencedor() == 0){ //Verifico as condicoes de derrota e vitoria
-            this.setState(this.getFila().removeFirst()); //Removo o primeiro evento, mas salvo ele num atributo da classe
+        /*
+        * Como são 5 jogadas por turno e 25 turnos no total,
+        * 5*25 = 125 jogadas totais e iterações do loop.
+        */
+        while (this.getCiclos() < 125 && (p1.getDef() > 0 || p2.getDef() > 0) && this.p1.est.getVencedor() == 0){ //Verifica as condicoes de derrota e vitoria
+            this.setState(this.getFila().removeFirst()); //Remove o primeiro evento, mas salva ele num atributo da classe
             switch (this.getState()) {
                 case "AcaoP1":
-                    while(this.getP1().isVivo() == true && valido == false){ //A flag de valido eh para saber se o usuario nn fez uma acao impossivel no setor
+                    while(this.getP1().isVivo() == true && valido == false){ //A flag valido eh para saber se o usuario não fez uma acao impossivel no setor
                         this.getP1().opcoes(scanner, this.getTab(), this); //Imprime as opcoes que o P1 pode fazer num geral, ate mesmo as que ele ta impossibilitado no momento
-                        valido = this.getP1().turno(scanner, tab, this, this.getState(), this.getP1()); //Ocorre a acao
+                        valido = this.getP1().turno(scanner, tab, this, this.getState(), this.getP1()); //Executa a acao
                         cont = this.getCiclos() + 1;
                     }
                     break;
@@ -161,8 +164,8 @@ public class Game {
             else if(this.getTab().getSetor(this.getP2().getX(), this.getP2().getY()).getEhFinal() == true) //Verifica se P2 venceu
                 this.p1.est.setVencedor(2); 
 
-            fila.addLast(this.getState()); //Recoloca o evento retirado novamente na fila, mas agr esta na ultima posicao
-            valido = false; //Recoloca a flag com o valor certo, para nn ficar com "lixo" de memoria
+            fila.addLast(this.getState()); //Recoloca o evento retirado novamente na fila, mas agora esta na ultima posicao
+            valido = false; //Recoloca a flag com o valor certo, para naõ ficar com "lixo" de memoria
         }
 
     }
