@@ -86,7 +86,9 @@ public class Game {
 
     /****************OUTROS METODOS****************/
 
-    //Fixo na fila de eventos os eventos que vao ocorrer em loop
+    /*
+    * Adiciona na lista os eventos que vão ocorrer em loop.
+    */
     public void adicionarFila(){
         LinkedList<String> temp = this.getFila();
         temp.addLast("AcaoP1");
@@ -97,7 +99,9 @@ public class Game {
         this.setFila(temp);
     }
     
-    //Inicializo o jogo
+    /*
+    * Inicializa os atributos de Game para iniciar o jogo.
+    */
     public void init() {
         this.setTab(new Tabuleiro());
         this.setP1(new JogadorSimples(new Estatistica())); //TODO: USO DE POLIMORFISMO COERCAO UPCAST
@@ -107,7 +111,10 @@ public class Game {
         this.getTab().setJogador(p2);
     }
 
-    //Loop principal, onde o jogo ocorre realmente
+    /*
+    * Loop principal onde a lógica do jogo
+    * é de fato implementada.
+    */
     public void play() {
         int cont = 0;
         boolean valido = false;
