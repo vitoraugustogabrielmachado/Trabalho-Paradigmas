@@ -1,3 +1,7 @@
+/*
+* Classe responsável por fornecer os métodos
+* para controlar o fluxo principal do jogo.
+*/
 // import java.util.Random;
 import java.util.LinkedList;
 import java.util.Scanner;
