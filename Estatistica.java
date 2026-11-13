@@ -1,6 +1,9 @@
 // Classe responsável por imprimir as estatísticas do jogo
 public class Estatistica {
+    // ATRIBUTOS
     private int killsP1, killsP2, procurasCerta, procurasTotal, qntdCura, qntdDanoRecebidoP1, qntdDanoRecebidoP2, vencedor;
+
+    // CONSTRUTORES
     public Estatistica(){}
     public Estatistica(int killsP1, int killsP2, int procurasCerta, int procurasTotal, int qntdCura, int qntdDanoRecebidoP1, int qntdDanoRecebidoP2, int vencedor){
         this.setKillsP1(killsP1);
@@ -12,6 +15,8 @@ public class Estatistica {
         this.setQntdDanoRecebidoP2(qntdDanoRecebidoP2);
         this.setVencedor(vencedor);
     }
+
+    // MÉTODOS GET E SET
     public void setKillsP1(int killsP1) {
         if(killsP1 >= 0)
             this.killsP1 = killsP1;
@@ -68,6 +73,8 @@ public class Estatistica {
     public int getVencedor() {
         return vencedor;
     }
+
+    // OUTROS MÉTODOS
 
     /*
     * Incrementa o número de mortes causadas pelos
