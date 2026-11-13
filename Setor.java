@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.ArrayList;
 
 public class Setor {
+    /***************ATRIBUTOS******************/
     private Jogador[] jogadores;
     private ArrayList<Inimigo> inimigos;
     private Boolean ehFinal, ehIncial, p1Esta, p2Esta;
@@ -117,12 +118,20 @@ public class Setor {
     }
 
     /****************OUTROS METODOS****************/
+
+    // Tira P1 deste setor.
     public void unsetJogador(JogadorSimples p1) {
         this.p1Esta = false;
     }
+    // Tira P2 deste setor.
     public void unsetJogador(JogadorSuporte p2) {
         this.p2Esta = false;
     }
+    /*
+    * Retorna true se há uma porta
+    * na direção passada como argumento,
+    * e false caso contrário.
+    */
     public boolean ehPorta(String direcao){
         switch (direcao) {
             case "UP": return this.UP;
@@ -133,7 +142,7 @@ public class Setor {
                 return false;
         }
     }
-    
+    // Retorna quantidade de inimigos vivos neste setor.
     public int qtdInimigosVivos(){ 
         int qtd = 0;
         for (int i = 0; i < this.getInimigos().size(); i++)
