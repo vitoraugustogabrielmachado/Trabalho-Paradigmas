@@ -273,6 +273,7 @@ public class Tabuleiro {
         }
         System.out.println("");
     }
+
     /* Imprime os setores dos jogadores
     // p1Esta e p2Esta definem a impressão dos jogadores
     // TODO: comentar, limpar/otimizar e, talvez, colocar em outra classe */
@@ -305,6 +306,18 @@ public class Tabuleiro {
         else if(!p1.vivo && p2.vivo)
             diferente = true;
 
+        imprimeSetorTipo(p1, p2, diferente);
+        imprimeSetorPortaSuperior(p1, p2, diferente);
+        imprimeSetorInimigos(p1, p2, diferente);
+        imprimeSetorLinhaVazia(p1, p2, diferente);
+        imprimeSetorPortasLaterais(p1, p2, diferente);
+        imprimeSetorRotulos(p1, p2, diferente);
+        imprimeSetorAtributos(p1, p2, diferente);
+        imprimeSetorPortaInferior(p1, p2, diferente);
+    }
+
+    // Imprime o tipo dos setores dos jogadores
+    private void imprimeSetorTipo(Jogador p1, Jogador p2, boolean diferente){
         int tipo1 = this.setores[p1.X][p1.Y].getTipoSetor();
         int tipo2 = this.setores[p2.X][p2.Y].getTipoSetor();
 
@@ -327,7 +340,10 @@ public class Tabuleiro {
         }
 
         System.out.println();
-        
+    }
+
+    // Imprime a porta superior do setor, se presente
+    private void imprimeSetorPortaSuperior(Jogador p1, Jogador p2, boolean diferente){
         if(p1.vivo) {
             if(this.setores[p1.X][p1.Y].ehPorta("UP")) {
                 System.out.print("|------*------|");
@@ -347,7 +363,10 @@ public class Tabuleiro {
         }
 
         System.out.println();
+    }
 
+    // Imprime os atributos dos inimigos presentes nos setores
+    private void imprimeSetorInimigos(Jogador p1, Jogador p2, boolean diferente){
         ArrayList<Inimigo> inimigos;
 
         if(p1.vivo) {
@@ -375,7 +394,10 @@ public class Tabuleiro {
         }
         
         System.out.println();
+    }
 
+    // Imprime a linha vazia no setor
+    private void imprimeSetorLinhaVazia(Jogador p1, Jogador p2, boolean diferente){
         if(p1.vivo) {
             System.out.print("|" + " ".repeat(13) + "|");
             System.out.print("    ");
@@ -385,7 +407,10 @@ public class Tabuleiro {
         }
 
         System.out.println();
+    }
 
+    // Imprime as portas laterais presentes no setor
+    private void imprimeSetorPortasLaterais(Jogador p1, Jogador p2, boolean diferente){
         if(p1.vivo) {
             if(this.setores[p1.X][p1.Y].ehPorta("LEFT")) {
                 System.out.print("*" + " ".repeat(13));
@@ -417,7 +442,10 @@ public class Tabuleiro {
         }
 
         System.out.println();
+    }
 
+    // Imprime rótulos dos jogadores nos setores
+    private void imprimeSetorRotulos(Jogador p1, Jogador p2, boolean diferente){
         if(p1.vivo) {
             System.out.print("|  P1");
         }
@@ -436,9 +464,10 @@ public class Tabuleiro {
         }
 
         System.out.println();
-        
-        // Atributos
-        
+    }
+
+    // Imprime os atributos dos jogadores nos setores
+    private void imprimeSetorAtributos(Jogador p1, Jogador p2, boolean diferente){
         if(p1.vivo) {
             System.out.print("|  "+ p1.getAtk() + "/" + p1.getDef());
         }
@@ -458,7 +487,10 @@ public class Tabuleiro {
         }
 
         System.out.println();
+    }
 
+    // Imprime porta inferior do setor, se presente
+    private void imprimeSetorPortaInferior(Jogador p1, Jogador p2, boolean diferente){
         if(p1.vivo) {
             if(this.setores[p1.X][p1.Y].ehPorta("DOWN")) {
                 System.out.print("|------*------|");
