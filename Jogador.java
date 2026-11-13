@@ -311,7 +311,7 @@ public abstract class Jogador implements Entidade {
 
     /*
     * Configura as flags/atributos MOV, ATK E PROC
-    * da classe Game.
+    * da classe Game, utilizadas no método turno desta classe.
     */
     public void setarFlags(Setor atu, Game g){
         if(atu.qtdInimigosVivos() == 0)
