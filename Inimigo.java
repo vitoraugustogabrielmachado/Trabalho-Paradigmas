@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Inimigo implements Entidade{
 
-    // Atributos
+    // ATRIBUTOS
     private int atk, def;
     private boolean vivo;
 
@@ -50,15 +50,18 @@ public class Inimigo implements Entidade{
         return this.vivo;
     }
 
-    /****************OUTROS METODOS****************/
-
     public boolean isVivo() {
         return this.vivo;
     }
 
+    /****************OUTROS METODOS****************/
+
     public void causarDano(Inimigo oponente){};
 
-    // Ataca o jogador p caso num seja par
+    /*
+    * Ataca o jogador p caso
+    * o número sorteado não seja par.
+    */
     public void causarDano(Jogador p){
         Random random = new Random();
         int num = random.nextInt(6)+1;
@@ -74,7 +77,9 @@ public class Inimigo implements Entidade{
         }
     }
 
-    //Funcao que causa(possivelmente) danos aos player, eh uma chance de causar dano
+    /*
+    * Ataca os jogadores P1 e P2 usando o método causarDano().
+    */
     public void ataqueInimigo(Tabuleiro tab, Jogador p1, Jogador p2){
         if(p1 instanceof JogadorSimples && p2 instanceof JogadorSuporte){ //Como p1 e p2 estao setados como Jogador, essa linha garante que eles representam as coisas certas
             if (p1.getX() != p2.getX() || p1.getY() != p2.getY()){ //Se p1 e p2 estao em setores diferentes
@@ -106,6 +111,10 @@ public class Inimigo implements Entidade{
         }
     }
 
+    /*
+    * Ajusta os atributos def e vivo da classe
+    * após ela receber dano por um jogador.
+    */
     public void dano(int dano){
         this.def -= dano;
         if (this.def <= 0){
