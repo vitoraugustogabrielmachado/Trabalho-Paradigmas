@@ -328,4 +328,13 @@ public abstract class Jogador implements Entidade {
             g.setPROC(false);
     }
 
+    /*
+    * Verifica se P1 ou P2 venceu.
+    */
+    public void verificaVencedor(Game g) {
+            if(g.getTab().getSetor(g.getP1().getX(), g.getP1().getY()).getEhFinal() == true) //Verifica se P1 venceu
+                g.getP1().est.setVencedor(1);
+            else if(g.getTab().getSetor(g.getP2().getX(), g.getP2().getY()).getEhFinal() == true) //Verifica se P2 venceu
+                g.getP1().est.setVencedor(2);
+    }
 }
