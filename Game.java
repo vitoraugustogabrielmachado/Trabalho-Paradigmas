@@ -157,10 +157,7 @@ public class Game {
             cont = this.getCiclos() + 1;
             this.setCiclos(cont);
 
-            if(this.getTab().getSetor(this.getP1().getX(), this.getP1().getY()).getEhFinal() == true) //Verifica se P1 venceu
-                this.p1.est.setVencedor(1); 
-            else if(this.getTab().getSetor(this.getP2().getX(), this.getP2().getY()).getEhFinal() == true) //Verifica se P2 venceu
-                this.p1.est.setVencedor(2); 
+            this.p1.verificaVencedor(this);
 
             fila.addLast(this.getState()); //Recoloca o evento retirado novamente na fila, mas agora esta na ultima posicao
             valido = false; //Recoloca a flag com o valor certo, para naõ ficar com "lixo" de memoria
