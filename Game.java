@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Game {
+    // ATRIBUTOS
     private Tabuleiro tab;
     private Jogador p1, p2;
     private LinkedList<String> fila;
@@ -159,6 +160,10 @@ public class Game {
 
     }
 
+    /*
+    * Método responsáevl por fornecer as estatísticas finais
+    * do jogo após seu término.
+    */
     public void end() {
         this.p1.est.imprimirTelaFinal(this);
         this.p1.est.imprimirP1();
