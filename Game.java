@@ -120,7 +120,7 @@ public class Game {
         boolean valido = false;
 
         Scanner scanner = new Scanner(System.in);
-        this.setFila(new LinkedList<>());
+        this.setFila(new LinkedList<String>());
         this.adicionarFila();
 
         Tabuleiro.limparTela();
@@ -136,7 +136,6 @@ public class Game {
                     while(this.getP1().isVivo() == true && valido == false){ //A flag valido eh para saber se o usuario não fez uma acao impossivel no setor
                         this.getP1().opcoes(scanner, this.getTab(), this); //Imprime as opcoes que o P1 pode fazer num geral, ate mesmo as que ele ta impossibilitado no momento
                         valido = this.getP1().turno(scanner, tab, this, this.getState(), this.getP1()); //Executa a acao
-                        cont = this.getCiclos() + 1;
                     }
                     break;
                 case "AcaoP2": //Mesma coisa que para P1
@@ -146,7 +145,6 @@ public class Game {
                             temp.opcoes(scanner, tab, p1, this); //As opcoes de P2 sao diferentes devido ao recuperarDef
                         }
                         valido = this.getP2().turno(scanner, tab, this, this.getState(), this.getP1());
-                        cont = this.getCiclos() + 1;
                     }
                     break;
                 case "AcaoOponentes": //Mesma situacao dos jogadores
@@ -154,9 +152,9 @@ public class Game {
                     op.ataqueInimigo(tab, p1, p2);
                     Tabuleiro.limparTela();
                     this.getTab().imprimeTabuleiro();
-                    cont = this.getCiclos() + 1;
                     break;
             }
+            cont = this.getCiclos() + 1;
             this.setCiclos(cont);
 
             if(this.getTab().getSetor(this.getP1().getX(), this.getP1().getY()).getEhFinal() == true) //Verifica se P1 venceu
