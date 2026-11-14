@@ -163,7 +163,7 @@ public class Game {
     }
 
     /*
-    * Método responsáevl por fornecer as estatísticas finais
+    * Método responsável por fornecer as estatísticas finais
     * do jogo após seu término.
     */
     public void end() {

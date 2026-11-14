@@ -91,7 +91,6 @@ public abstract class Jogador implements Entidade {
         this.imprimirAcoesExtras(g.getP1());
     }
 
-    //TODO: modularizar a parte do atk, deixa com o pai(vitor)
     public boolean turno(Scanner scanner, Tabuleiro tab, Game g, String state, Jogador p1){
         Setor atu = tab.getSetor(this.X, this.Y);
         if(atu.getEhFinal() == true)
@@ -136,7 +135,6 @@ public abstract class Jogador implements Entidade {
                 System.out.println("*************Procurar não permitido.*************");
             else if(g.getProc() == true) {
                 System.out.println("*************Acao invalida*************");
-                System.out.println("Há inimigo(s) vivo(s) nesse setor...");
             }
         }
 
@@ -148,7 +146,7 @@ public abstract class Jogador implements Entidade {
     * Altera as coordenadas do setor atual do jogador
     * com base na string de argumento.
     */
-    public void movimentar(Tabuleiro tab, String direcao){
+    public boolean movimentar(Tabuleiro tab, String direcao){
         // Verifica antes se o movimento está liberado.
         if(tab.movimentoLiberado(this.X, this.Y, direcao)){ 
             tab.unsetJogador(this);
@@ -172,9 +170,10 @@ public abstract class Jogador implements Entidade {
             }
 
             tab.setJogador(this);
+            return true;
         }
         else{
-            System.out.println("Nao é possivel ir para " + direcao); 
+            return false;
         }
     }
 
@@ -185,19 +184,15 @@ public abstract class Jogador implements Entidade {
     */
     public boolean acaoMovimentar(String acao, Tabuleiro tab){
         Tabuleiro.limparTela();
-        switch (acao){ //TODO: tem um bug q eh quando vc movimenta pra baixo na borda de baixo, ver como resolver isso dps
+        switch (acao){ 
             case "W":
-                this.movimentar(tab, "UP");
-                return true;
+                return this.movimentar(tab, "UP");
             case "A":
-                this.movimentar(tab, "LEFT");
-                return true;
+                return this.movimentar(tab, "LEFT");
             case "S":
-                this.movimentar(tab, "DOWN");
-                return true;
+                return this.movimentar(tab, "DOWN");
             case "D":
-                this.movimentar(tab, "RIGHT");
-                return true;
+                return this.movimentar(tab, "RIGHT");
             default:
                 return false;
         }
