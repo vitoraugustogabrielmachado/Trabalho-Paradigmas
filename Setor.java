@@ -17,7 +17,7 @@ public class Setor {
         this.jogadores = new Jogador[2];
 
         int qtd = aleat.nextInt(3) + 1; //Quantidade de inimigos criadas em cada setor eh aleatoria
-        inimigos = new ArrayList<Inimigo>(qtd); //TODO: USO DE COLECOES
+        inimigos = new ArrayList<Inimigo>(qtd);
         // Inicializa todos os inimigos do setor
         for(int i = 0; i < qtd; i++) {
             int num = aleat.nextInt(3) + 1;

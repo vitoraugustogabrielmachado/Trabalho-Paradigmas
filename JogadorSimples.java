@@ -17,6 +17,14 @@ public class JogadorSimples extends Jogador {
     /****************OUTROS METODOS****************/
     @Override 
     public void texto(){
-        System.out.println("Ação P1: ");
+        System.out.println("-> Turno P1: ");
+    }
+
+    @Override
+    public void imprimirAcoesExtras(Jogador p1){
+        System.out.println("╚═══════════════════════════════════════╝");
+        System.out.print("Escolha sua ação > ");
+        
+        System.out.println();
     }
 }

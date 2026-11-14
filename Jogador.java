@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -62,17 +63,32 @@ public abstract class Jogador implements Entidade {
     /****************OUTROS METODOS****************/
 
     //Imprime todas as opcoes que o usuario pode fazer
-    public void opcoes(Scanner input, Tabuleiro tab, Game g){
-        this.texto();
-        System.out.println("Movimento: [W] Cima | [A] Esquerda | [S] Baixo | [D] Direita");
+    public void opcoes(Scanner input, Tabuleiro tab, Game g) {
         Setor atu = tab.getSetor(this.X, this.Y);
-        if(atu.qtdInimigosVivos() > 0){ 
-            System.out.print("Atacar: ");
-            for(int i = 1; i <= atu.getInimigos().size() ; i++)
-                if (atu.getInimigos().get(i-1).isVivo()) System.out.printf("[A" + i + "] Atacar Inimigo %d | ", i);
-            System.out.println();
+
+        System.out.println();
+        this.texto();
+        System.out.println("╔════════════════ AÇÕES ════════════════╗");
+
+        // Movimento
+        System.out.println("  Mover    : [W] ↑  [A] ←  [S] ↓  [D] →");
+
+        // Ataques (só aparecem se houver inimigos vivos)
+        if (atu.qtdInimigosVivos() > 0) {
+            ArrayList<String> ataques = new ArrayList<>();
+            ArrayList<Inimigo> inimigos = atu.getInimigos();
+
+            for (int i = 0; i < inimigos.size(); i++) {
+                if (inimigos.get(i).isVivo()) {
+                    ataques.add(String.format("[A%d] Inimigo %d", i + 1, i + 1));
+                }
+            }
+            System.out.println("  Atacar   : " + String.join("  ", ataques));
         }
-        System.out.println("Procurar: [P]");
+
+        // Outras ações
+        System.out.println("  Procurar : [P]");
+        this.imprimirAcoesExtras(g.getP1());
     }
 
     //TODO: modularizar a parte do atk, deixa com o pai(vitor)
@@ -118,8 +134,10 @@ public abstract class Jogador implements Entidade {
             tab.imprimeTabuleiro();
             if(g.getProc() == false && op.charAt(0) == 'P')
                 System.out.println("*************Procurar não permitido.*************");
-            else
+            else if(g.getProc() == true) {
                 System.out.println("*************Acao invalida*************");
+                System.out.println("Há inimigo(s) vivo(s) nesse setor...");
+            }
         }
 
         return acaoFeita;
@@ -285,7 +303,7 @@ public abstract class Jogador implements Entidade {
 
     protected abstract void texto();
 
-    protected void imprimirAcoesExtras(Jogador p1){}; //nn eh definido como abstrato pois se fosse jogadorSimples deveria implementar isso, mas nn pode
+    protected abstract void imprimirAcoesExtras(Jogador p1);
 
     // Jogador p1 não possui ações extras.
     protected boolean acoesExtras(Jogador p1, String op, Tabuleiro tab){

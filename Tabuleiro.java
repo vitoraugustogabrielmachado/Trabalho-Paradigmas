@@ -1,12 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-/* TODO: Definir as portas abertas; melhorar, comentar e otimizar código de impressão;
-// Melhor definir as portas no contrutor do tabuleiro; Eu estava pensando em fazer o contrutor de setor
-// receber como parametro as portas que devem ficar abertas ou um vetor de boolean em que 
-// V[0] -> UP ; V[1] -> DOWN; V[2] -> LEFT; V[3] -> RIGHT; EX -> V[0] == 1 -> setor.UP = true */
-// TODO: tirar o p1 do tabuleiro quando ele morrer
-
 public class Tabuleiro {
     private final String titulo = "Antivírus por um dia"; 
     private final Setor[][] setores;
@@ -118,7 +112,7 @@ public class Tabuleiro {
     // Indica que p está no setor (x, y)
     public void setJogador(Jogador p) {
         if (p instanceof JogadorSimples)
-            this.setores[p.getX()][p.getY()].setJogador((JogadorSimples) p); //TODO: USO DO POLIMORFISMO DOWNCAST
+            this.setores[p.getX()][p.getY()].setJogador((JogadorSimples) p);
         if (p instanceof JogadorSuporte)
             this.setores[p.getX()][p.getY()].setJogador((JogadorSuporte) p);
     }
@@ -151,9 +145,7 @@ public class Tabuleiro {
     public boolean movimentoLiberado(int x, int y, String porta) {
         return this.setores[x][y].ehPorta(porta);
     }
-    /* Imprime o tabuleiro + setores
-    // TODO: o ideal seria esse método só imprimir o tabuleiro e colocarmos imprimeSetorJogadores(); em outra classe
-    // ou chamarmos separadamente, pois esse método usará atributos da classe jogadores. */
+    /* Imprime o tabuleiro + setores*/
     public void imprimeTabuleiro() {
         imprimeTitulo();
         imprimeSetores();
@@ -167,8 +159,7 @@ public class Tabuleiro {
         System.out.println("|" + " ".repeat(4) + this.titulo + " ".repeat(4) + "|");
         System.out.println("-".repeat(30));
     }
-    /* Imprime setor por setor
-    //TODO: comentar e limpar/otimizar */
+    /* Imprime setor por setor */
     private void imprimeSetores() {
         System.out.print(" ".repeat(5));
         for(int i = 1; i < 6; i++) {
@@ -274,11 +265,9 @@ public class Tabuleiro {
         System.out.println("");
     }
 
-    /* Imprime os setores dos jogadores
-    // p1Esta e p2Esta definem a impressão dos jogadores
-    // TODO: comentar, limpar/otimizar e, talvez, colocar em outra classe */
+    /* Imprime os setores dos jogadores */
     private void imprimeSetorJogadores() {
-        Jogador p1 = new JogadorSimples(); //TODO: Pqq ta setando os jogadores aq tbm?
+        Jogador p1 = new JogadorSimples();
         p1.setVivo(false);
         Jogador p2 = new JogadorSuporte();
         p2.setVivo(false);

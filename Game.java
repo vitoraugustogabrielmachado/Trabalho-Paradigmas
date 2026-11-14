@@ -104,8 +104,8 @@ public class Game {
     */
     public void init() {
         this.setTab(new Tabuleiro());
-        this.setP1(new JogadorSimples(new Estatistica())); //TODO: USO DE POLIMORFISMO COERCAO UPCAST
-        this.setP2(new JogadorSuporte(new Estatistica())); //TODO: USO DE POLIMORFISMO COERCAO UPCAST
+        this.setP1(new JogadorSimples(new Estatistica()));
+        this.setP2(new JogadorSuporte(new Estatistica()));
         this.setCiclos(0);
         this.getTab().setJogador(p1);
         this.getTab().setJogador(p2);
@@ -140,10 +140,7 @@ public class Game {
                     break;
                 case "AcaoP2": //Mesma coisa que para P1
                     while(this.getP2().isVivo() == true && valido == false){
-                        if(p2 instanceof JogadorSuporte){
-                            JogadorSuporte temp = (JogadorSuporte) p2; // TODO: USO DE POLIMORFISMO COERCAO DOWNCAST
-                            temp.opcoes(scanner, tab, p1, this); //As opcoes de P2 sao diferentes devido ao recuperarDef
-                        }
+                        this.getP2().opcoes(scanner, this.getTab(), this);
                         valido = this.getP2().turno(scanner, tab, this, this.getState(), this.getP1());
                     }
                     break;

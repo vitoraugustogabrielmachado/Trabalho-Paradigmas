@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 public class JogadorSuporte extends Jogador{
     //---------CONTSRUTORES----------
@@ -42,15 +41,19 @@ public class JogadorSuporte extends Jogador{
     */
     @Override
     public void texto(){
-        System.out.println("Ação P2: ");
+        System.out.println("-> Turno P2: ");
     }
 
     @Override
     public void imprimirAcoesExtras(Jogador p1){
-        System.out.print("Restaurar: [R2] Restaurar P2");
+        System.out.print("  Restaurar: [R2] Restaurar P2");
 
         if (p1.getX() == this.getX() && p1.getY() == this.getY())
             System.out.print(" | [R1] Restaurar P1");
+
+        System.out.println();
+        System.out.println("╚═══════════════════════════════════════╝");
+        System.out.print("Escolha sua ação > ");
 
         System.out.println();
     }
@@ -77,14 +80,5 @@ public class JogadorSuporte extends Jogador{
             return false;
         }
         return false;
-    }
-
-    /*
-    * Imprime as opções disponíveis para
-    * o jogador suporte P2.
-    */
-    public void opcoes(Scanner input, Tabuleiro tab, Jogador p1, Game g){
-        super.opcoes(input, tab, g);
-        this.imprimirAcoesExtras(p1);
     }
 }
